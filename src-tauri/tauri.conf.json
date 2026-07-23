@@ -35,9 +35,6 @@
     ],
     "android": {
       "debugApplicationIdSuffix": ".debug"
-    },
-    "resources": [
-      "../content/**/*"
-    ]
+    }
   }
 }
