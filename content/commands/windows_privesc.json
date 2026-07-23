@@ -3,7 +3,12 @@
     "id": "win-cmd-whoami-priv",
     "tool": "CMD",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "enumeration", "cmd"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "enumeration",
+      "cmd"
+    ],
     "platform": "windows",
     "title": "Check User Privileges (CMD)",
     "command": "whoami /priv",
@@ -16,20 +21,32 @@
     "id": "win-cmd-sysinfo",
     "tool": "CMD",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "enumeration", "cmd"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "enumeration",
+      "cmd"
+    ],
     "platform": "windows",
     "title": "System Information & Hotfixes (CMD)",
     "command": "systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\" /C:\"System Type\"",
     "description": "Extracts the core operating system details from the noisy output of 'systeminfo'. You can also search for applied hotfixes to identify missing kernel patches.",
     "when_to_use": "Use this to determine the exact OS build number. You can then cross-reference this build with local exploit suggesters (like Windows-Exploit-Suggester) to find kernel exploits.",
     "example": "systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\"",
-    "related_ids": ["win-ps-system-info"]
+    "related_ids": [
+      "win-ps-system-info"
+    ]
   },
   {
     "id": "win-ps-system-info",
     "tool": "PowerShell",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "enumeration", "powershell"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "enumeration",
+      "powershell"
+    ],
     "platform": "windows",
     "title": "Get OS Architecture & Details (PowerShell)",
     "command": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture",
@@ -41,7 +58,12 @@
     "id": "win-cmd-net-users",
     "tool": "CMD",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "enumeration", "cmd"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "enumeration",
+      "cmd"
+    ],
     "platform": "windows",
     "title": "List Local Users and Administrators",
     "command": "net users\nnet localgroup administrators",
@@ -53,7 +75,12 @@
     "id": "win-ps-get-acl",
     "tool": "PowerShell",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "enumeration", "powershell"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "enumeration",
+      "powershell"
+    ],
     "platform": "windows",
     "title": "Check Folder Permissions (ACLs)",
     "command": "Get-Acl -Path \"<target_path>\" | Format-List",
@@ -66,7 +93,11 @@
     "id": "win-winpeas-all",
     "tool": "winPEAS",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "automation"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "automation"
+    ],
     "platform": "windows",
     "title": "Run Full winPEAS Scan",
     "command": ".\\winPEASany.exe quiet cmd fast",
@@ -74,13 +105,20 @@
     "when_to_use": "Run this after manual enumeration if nothing obvious stands out. It automates hundreds of checks in seconds.",
     "example": ".\\winPEASany.exe quiet cmd fast > output.txt",
     "common_pitfalls": "The output is extremely verbose and color-coded. If you redirect to a text file, the ANSI color codes will make it unreadable unless you use a compatible viewer or strip them.",
-    "related_ids": ["linpeas-all"]
+    "related_ids": [
+      "linpeas-all"
+    ]
   },
   {
     "id": "win-cmd-services",
     "tool": "CMD",
     "category": "Windows Privilege Escalation",
-    "scenario_tags": ["windows", "privesc", "enumeration", "services"],
+    "scenario_tags": [
+      "windows",
+      "privesc",
+      "enumeration",
+      "services"
+    ],
     "platform": "windows",
     "title": "Query Unquoted Service Paths",
     "command": "wmic service get name,displayname,pathname,startmode | findstr /i \"auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\"",

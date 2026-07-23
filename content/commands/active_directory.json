@@ -3,7 +3,11 @@
     "id": "ad-sharphound-all",
     "tool": "SharpHound",
     "category": "Active Directory",
-    "scenario_tags": ["ad", "enumeration", "bloodhound"],
+    "scenario_tags": [
+      "ad",
+      "enumeration",
+      "bloodhound"
+    ],
     "platform": "windows",
     "title": "Run Full AD Enumeration (SharpHound)",
     "command": "Invoke-BloodHound -CollectionMethod All -Domain <domain.local> -ZipFileName <output.zip>",
@@ -22,7 +26,11 @@
     "id": "ad-ldapsearch-users",
     "tool": "ldapsearch",
     "category": "Active Directory",
-    "scenario_tags": ["ad", "enumeration", "ldap"],
+    "scenario_tags": [
+      "ad",
+      "enumeration",
+      "ldap"
+    ],
     "platform": "linux",
     "title": "Extract All Domain Users via LDAP",
     "command": "ldapsearch -x -h <domain_controller_ip> -b \"DC=<domain>,DC=<local>\" -D \"<domain>\\<username>\" -w '<password>' \"(objectClass=user)\" sAMAccountName",
@@ -34,7 +42,11 @@
     "id": "ad-net-domain-admins",
     "tool": "net",
     "category": "Active Directory",
-    "scenario_tags": ["ad", "enumeration", "cmd"],
+    "scenario_tags": [
+      "ad",
+      "enumeration",
+      "cmd"
+    ],
     "platform": "windows",
     "title": "List Domain Admins",
     "command": "net group \"Domain Admins\" /domain",

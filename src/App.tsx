@@ -314,7 +314,7 @@ function App() {
                       {/* Command Builder */}
                       <section>
                         <h4 className="font-mono text-[11px] font-bold text-gray-500 uppercase tracking-[0.05em] mb-3">Execute Command</h4>
-                        <CommandBuilder commandTemplate={cmd.command} />
+                        <CommandBuilder entry={cmd} />
                       </section>
 
                       {/* Details */}

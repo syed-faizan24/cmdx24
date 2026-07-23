@@ -3,7 +3,10 @@
     "id": "encode-base64",
     "tool": "base64",
     "category": "Cracking & Encoding",
-    "scenario_tags": ["encoding", "base64"],
+    "scenario_tags": [
+      "encoding",
+      "base64"
+    ],
     "platform": "linux",
     "title": "Base64 Encode a String",
     "command": "echo -n \"<string>\" | base64",
@@ -16,7 +19,11 @@
     "id": "decode-base64",
     "tool": "base64",
     "category": "Cracking & Encoding",
-    "scenario_tags": ["encoding", "base64", "decoding"],
+    "scenario_tags": [
+      "encoding",
+      "base64",
+      "decoding"
+    ],
     "platform": "linux",
     "title": "Base64 Decode a String",
     "command": "echo -n \"<encoded_string>\" | base64 -d",
@@ -28,7 +35,11 @@
     "id": "urlencode-python",
     "tool": "python3",
     "category": "Cracking & Encoding",
-    "scenario_tags": ["encoding", "url-encoding", "python"],
+    "scenario_tags": [
+      "encoding",
+      "url-encoding",
+      "python"
+    ],
     "platform": "cross-platform",
     "title": "URL Encode a String (Python)",
     "command": "python3 -c \"import urllib.parse; print(urllib.parse.quote('<string>'))\"",

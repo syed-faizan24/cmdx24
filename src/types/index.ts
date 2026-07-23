@@ -17,6 +17,8 @@ export interface CommandEntry {
   common_pitfalls?: string;
   related_ids?: string[];
   further_reading?: FurtherReading[];
+  flag_descriptions?: Record<string, string>;
+  optional_flags?: Array<{ flag: string; description: string }>;
 }
 
 export interface ModuleEntry {

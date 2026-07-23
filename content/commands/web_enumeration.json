@@ -3,46 +3,108 @@
     "id": "ffuf-dir-fuzz",
     "tool": "ffuf",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "directory-bruteforce", "fuzzing"],
+    "scenario_tags": [
+      "web",
+      "directory-bruteforce",
+      "fuzzing"
+    ],
     "platform": "cross-platform",
     "title": "Directory and File Fuzzing",
-    "command": "ffuf -w <wordlist> -u http://<target>/FUZZ",
+    "command": "ffuf [FLAGS] -w <wordlist> -u http://<target>/FUZZ",
     "description": "Uses a highly optimized Go-based engine to rapidly request URL paths by replacing the 'FUZZ' keyword with entries from a provided wordlist, effectively brute-forcing hidden directories and files.",
     "when_to_use": "This is your primary tool for mapping out the hidden attack surface of a web application. Run this immediately against any discovered web server to find admin panels, backups, or undocumented APIs.",
     "example": "ffuf -w /usr/share/wordlists/dirb/common.txt -u http://10.10.10.10/FUZZ",
-    "common_pitfalls": "Failing to filter out false positives. If the server returns a 200 OK for every non-existent page, you must use the '-fc' (filter code) or '-fs' (filter size) flags to hide the noise."
+    "common_pitfalls": "Failing to filter out false positives. If the server returns a 200 OK for every non-existent page, you must use the '-fc' (filter code) or '-fs' (filter size) flags to hide the noise.",
+    "flag_descriptions": {
+      "-u": "Target URL",
+      "-w": "Wordlist file path and optional keyword"
+    },
+    "optional_flags": [
+      {
+        "flag": "-c",
+        "description": "Colorize output"
+      },
+      {
+        "flag": "-v",
+        "description": "Verbose output, printing full URLs and redirects"
+      }
+    ]
   },
   {
     "id": "ffuf-vhost-fuzz",
     "tool": "ffuf",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "vhost-bruteforce", "fuzzing"],
+    "scenario_tags": [
+      "web",
+      "vhost-bruteforce",
+      "fuzzing"
+    ],
     "platform": "cross-platform",
     "title": "Virtual Host (VHost) Fuzzing",
-    "command": "ffuf -w <wordlist> -u http://<target> -H \"Host: FUZZ.<target>\"",
+    "command": "ffuf [FLAGS] -w <wordlist> -u http://<target> -H \"Host: FUZZ.<target>\"",
     "description": "Fuzzes the HTTP 'Host' header to discover subdomains or virtual hosts that are served by the same IP address but aren't publicly listed in DNS.",
     "when_to_use": "Crucial when targeting a single IP that might host multiple internal applications (like 'dev.target.local' or 'admin.target.local') that route differently based on the requested Host header.",
     "example": "ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -u http://target.com -H \"Host: FUZZ.target.com\" -fs 1234",
-    "common_pitfalls": "You absolutely must use size filtering ('-fs') or word filtering ('-fw') here, because the default VHost will usually return a valid 200 response, flooding your results."
+    "common_pitfalls": "You absolutely must use size filtering ('-fs') or word filtering ('-fw') here, because the default VHost will usually return a valid 200 response, flooding your results.",
+    "flag_descriptions": {
+      "-u": "Target URL",
+      "-w": "Wordlist file path and optional keyword",
+      "-H": "Header data"
+    },
+    "optional_flags": [
+      {
+        "flag": "-c",
+        "description": "Colorize output"
+      },
+      {
+        "flag": "-v",
+        "description": "Verbose output, printing full URLs and redirects"
+      }
+    ]
   },
   {
     "id": "gobuster-dir",
     "tool": "gobuster",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "directory-bruteforce"],
+    "scenario_tags": [
+      "web",
+      "directory-bruteforce"
+    ],
     "platform": "cross-platform",
     "title": "Directory Brute-Forcing with Extensions",
-    "command": "gobuster dir -u http://<target> -w <wordlist> -x <extensions>",
+    "command": "gobuster [FLAGS] dir -u http://<target> -w <wordlist> -x <extensions>",
     "description": "A classic directory brute-forcing tool that allows you to easily append specific file extensions (like .php, .txt, .bak) to every wordlist entry during the scan.",
     "when_to_use": "A solid alternative to ffuf when you want a simpler syntax for finding specific file types on a target web server.",
     "example": "gobuster dir -u http://10.10.10.15 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,bak",
-    "related_ids": ["ffuf-dir-fuzz"]
+    "related_ids": [
+      "ffuf-dir-fuzz"
+    ],
+    "flag_descriptions": {
+      "dir": "Use directory/file enumeration mode",
+      "-u": "The target URL",
+      "-w": "Path to the wordlist",
+      "-x": "File extensions to search for"
+    },
+    "optional_flags": [
+      {
+        "flag": "-k",
+        "description": "Skip TLS certificate verification"
+      },
+      {
+        "flag": "-t 50",
+        "description": "Run with 50 concurrent threads (default is 10)"
+      }
+    ]
   },
   {
     "id": "burp-proxy-setup",
     "tool": "Burp Suite",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "proxy", "interception"],
+    "scenario_tags": [
+      "web",
+      "proxy",
+      "interception"
+    ],
     "platform": "cross-platform",
     "title": "Configure Proxy Interception",
     "command": "FoxyProxy -> Burp (127.0.0.1:8080) | Burp: Proxy -> Intercept is on",
@@ -55,7 +117,11 @@
     "id": "burp-repeater",
     "tool": "Burp Suite",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "manual-testing", "repeater"],
+    "scenario_tags": [
+      "web",
+      "manual-testing",
+      "repeater"
+    ],
     "platform": "cross-platform",
     "title": "Send to Repeater (Shortcut)",
     "command": "Ctrl + R (Windows/Linux) or Cmd + R (Mac)",
@@ -67,7 +133,10 @@
     "id": "nikto-basic",
     "tool": "nikto",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "vulnerability-scanning"],
+    "scenario_tags": [
+      "web",
+      "vulnerability-scanning"
+    ],
     "platform": "linux",
     "title": "Basic Web Server Vulnerability Scan",
     "command": "nikto -h <target>",
@@ -80,7 +149,11 @@
     "id": "wpscan-enum",
     "tool": "wpscan",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "cms", "wordpress"],
+    "scenario_tags": [
+      "web",
+      "cms",
+      "wordpress"
+    ],
     "platform": "linux",
     "title": "Aggressive WordPress Enumeration",
     "command": "wpscan --url <target> --enumerate vp,vt,u",
@@ -93,25 +166,62 @@
     "id": "sqlmap-auto",
     "tool": "sqlmap",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "exploitation", "sqli"],
+    "scenario_tags": [
+      "web",
+      "exploitation",
+      "sqli"
+    ],
     "platform": "cross-platform",
     "title": "Automated SQL Injection Testing",
-    "command": "sqlmap -u \"<target_url>\" --batch --dbs",
+    "command": "sqlmap [FLAGS] -u \"<target_url>\" --batch --dbs",
     "description": "Automatically tests a URL parameter for SQL injection vulnerabilities. If successful, it exploits the flaw to list all databases ('--dbs') available on the backend server. The '--batch' flag accepts default prompts without user interaction.",
     "when_to_use": "Use this when you suspect a URL parameter (e.g., '?id=1') or a POST body field is vulnerable to SQL injection, but you want to automate the tedious payload generation and database dumping process.",
     "example": "sqlmap -u \"http://10.10.10.30/view.php?id=1\" --batch --dbs",
-    "common_pitfalls": "Can accidentally corrupt database records if testing against fragile production applications. Never run blindly against untested targets."
+    "common_pitfalls": "Can accidentally corrupt database records if testing against fragile production applications. Never run blindly against untested targets.",
+    "flag_descriptions": {
+      "-u": "Target URL",
+      "--dbs": "Enumerate DBMS databases",
+      "--batch": "Never ask for user input, use the default behavior"
+    },
+    "optional_flags": [
+      {
+        "flag": "--batch",
+        "description": "Never ask for user input, use the default behavior"
+      },
+      {
+        "flag": "--random-agent",
+        "description": "Use randomly selected HTTP User-Agent header value"
+      }
+    ]
   },
   {
     "id": "sqlmap-request-file",
     "tool": "sqlmap",
     "category": "Web Enumeration",
-    "scenario_tags": ["web", "exploitation", "sqli", "burp"],
+    "scenario_tags": [
+      "web",
+      "exploitation",
+      "sqli",
+      "burp"
+    ],
     "platform": "cross-platform",
     "title": "SQLMap via Intercepted Request File",
-    "command": "sqlmap -r <request_file> -p <parameter> --dump",
+    "command": "sqlmap [FLAGS] -r <request_file> -p <parameter> --dump",
     "description": "Instructs SQLMap to parse a raw HTTP request saved to a text file (usually exported directly from Burp Suite) and target a specific parameter for injection, ultimately attempting to dump the tables.",
     "when_to_use": "Crucial when the SQL injection is in a complex POST request, an authenticated session with specific cookies, or hidden within HTTP headers, which are difficult to supply via the command line.",
-    "example": "sqlmap -r login_request.txt -p username --dump"
+    "example": "sqlmap -r login_request.txt -p username --dump",
+    "flag_descriptions": {
+      "--dump": "Dump DBMS database table entries"
+    },
+    "optional_flags": [
+      {
+        "flag": "--batch",
+        "description": "Never ask for user input, use the default behavior"
+      },
+      {
+        "flag": "--random-agent",
+        "description": "Use randomly selected HTTP User-Agent header value"
+      }
+    ]
   }
 ]

@@ -3,7 +3,12 @@
     "id": "nmap-syn-scan",
     "tool": "nmap",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "port-scanning", "stealth", "oscp-prep"],
+    "scenario_tags": [
+      "recon",
+      "port-scanning",
+      "stealth",
+      "oscp-prep"
+    ],
     "platform": "cross-platform",
     "title": "Stealth SYN Scan (Top 1000 Ports)",
     "command": "sudo nmap -sS -T4 <target>",
@@ -11,66 +16,178 @@
     "when_to_use": "Use this as your initial port scanning technique when you have root/Administrator privileges on your attacking machine and want a rapid overview of open ports without creating full TCP connection logs on the target.",
     "example": "sudo nmap -sS -T4 192.168.1.100",
     "common_pitfalls": "Requires root/sudo privileges to construct raw packets. Modern firewalls/IDS will still easily detect this.",
-    "related_ids": ["nmap-full-tcp", "nmap-udp-scan", "masscan-fast-tcp"]
+    "related_ids": [
+      "nmap-full-tcp",
+      "nmap-udp-scan",
+      "masscan-fast-tcp"
+    ],
+    "flag_descriptions": {
+      "-sS": "TCP SYN scan (stealth)",
+      "-T4": "Aggressive timing template (faster scan)"
+    },
+    "optional_flags": [
+      {
+        "flag": "-v",
+        "description": "Increase verbosity level (use -vv or more for greater effect)"
+      },
+      {
+        "flag": "-Pn",
+        "description": "Treat all hosts as online -- skip host discovery"
+      },
+      {
+        "flag": "-A",
+        "description": "Enable OS detection, version detection, script scanning, and traceroute"
+      }
+    ]
   },
   {
     "id": "nmap-full-tcp",
     "tool": "nmap",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "port-scanning", "service-detection", "oscp-prep"],
+    "scenario_tags": [
+      "recon",
+      "port-scanning",
+      "service-detection",
+      "oscp-prep"
+    ],
     "platform": "cross-platform",
     "title": "Full TCP Port Scan with Service Detection",
-    "command": "nmap -p- -sC -sV -T4 -v <target>",
+    "command": "nmap [FLAGS] -p- -sC -sV -T4 -v <target>",
     "description": "Scans all 65,535 TCP ports on a target. It also runs default enumeration scripts (-sC) and attempts to determine the exact version of the services running (-sV) on open ports.",
     "when_to_use": "Use this after an initial fast scan reveals some open ports, and you need a comprehensive view of the entire TCP attack surface including obscure high-numbered ports.",
     "example": "nmap -p- -sC -sV -T4 -v 10.10.10.25",
-    "common_pitfalls": "This scan is extremely slow compared to top-1000 port scans. It is also highly visible and noisy."
+    "common_pitfalls": "This scan is extremely slow compared to top-1000 port scans. It is also highly visible and noisy.",
+    "flag_descriptions": {
+      "-sV": "Probe open ports to determine service/version info",
+      "-sC": "Run default nmap scripts",
+      "-p-": "Scan all 65535 ports",
+      "-T4": "Aggressive timing template (faster scan)",
+      "-p": "Specify ports to scan"
+    },
+    "optional_flags": [
+      {
+        "flag": "-v",
+        "description": "Increase verbosity level (use -vv or more for greater effect)"
+      },
+      {
+        "flag": "-Pn",
+        "description": "Treat all hosts as online -- skip host discovery"
+      },
+      {
+        "flag": "-A",
+        "description": "Enable OS detection, version detection, script scanning, and traceroute"
+      }
+    ]
   },
   {
     "id": "nmap-udp-scan",
     "tool": "nmap",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "port-scanning", "udp"],
+    "scenario_tags": [
+      "recon",
+      "port-scanning",
+      "udp"
+    ],
     "platform": "cross-platform",
     "title": "Top 100 UDP Port Scan",
     "command": "sudo nmap -sU --top-ports 100 <target>",
     "description": "Performs a UDP scan against the 100 most commonly used UDP ports. UDP scanning is fundamentally different and often much slower than TCP scanning due to the lack of connection state.",
     "when_to_use": "Essential for discovering services that exclusively use UDP, such as SNMP, TFTP, or early versions of DNS, which would be entirely missed by standard TCP scans.",
     "example": "sudo nmap -sU --top-ports 100 10.129.2.14",
-    "common_pitfalls": "Extremely slow. Often blocked by ICMP rate limiting on the target, resulting in many false positives ('open|filtered'). Always verify UDP results."
+    "common_pitfalls": "Extremely slow. Often blocked by ICMP rate limiting on the target, resulting in many false positives ('open|filtered'). Always verify UDP results.",
+    "flag_descriptions": {
+      "-p": "Specify ports to scan"
+    },
+    "optional_flags": [
+      {
+        "flag": "-v",
+        "description": "Increase verbosity level (use -vv or more for greater effect)"
+      },
+      {
+        "flag": "-Pn",
+        "description": "Treat all hosts as online -- skip host discovery"
+      },
+      {
+        "flag": "-A",
+        "description": "Enable OS detection, version detection, script scanning, and traceroute"
+      }
+    ]
   },
   {
     "id": "nmap-ping-sweep",
     "tool": "nmap",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "host-discovery", "internal-network"],
+    "scenario_tags": [
+      "recon",
+      "host-discovery",
+      "internal-network"
+    ],
     "platform": "cross-platform",
     "title": "Ping Sweep for Host Discovery",
-    "command": "nmap -sn <target_subnet>",
+    "command": "nmap [FLAGS] -sn <target_subnet>",
     "description": "Sends ICMP echo requests and TCP ACKs to a subnet to determine which hosts are currently online, without performing any actual port scanning.",
     "when_to_use": "Use this when you first land on an internal network segment and need a quick map of live IP addresses to target for deeper enumeration.",
     "example": "nmap -sn 192.168.1.0/24",
     "common_pitfalls": "Windows Firewall blocks ICMP echo requests by default, meaning Windows hosts might appear 'down' even if they are active.",
-    "related_ids": ["nmap-syn-scan"]
+    "related_ids": [
+      "nmap-syn-scan"
+    ],
+    "optional_flags": [
+      {
+        "flag": "-v",
+        "description": "Increase verbosity level (use -vv or more for greater effect)"
+      },
+      {
+        "flag": "-Pn",
+        "description": "Treat all hosts as online -- skip host discovery"
+      },
+      {
+        "flag": "-A",
+        "description": "Enable OS detection, version detection, script scanning, and traceroute"
+      }
+    ]
   },
   {
     "id": "nmap-vuln-scan",
     "tool": "nmap",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "vulnerability-scanning", "nmap-scripts"],
+    "scenario_tags": [
+      "recon",
+      "vulnerability-scanning",
+      "nmap-scripts"
+    ],
     "platform": "cross-platform",
     "title": "Nmap Vulnerability Script Scan",
-    "command": "nmap --script vuln <target>",
+    "command": "nmap [FLAGS] --script vuln <target>",
     "description": "Executes a broad suite of Nmap Scripting Engine (NSE) scripts categorized as 'vuln'. These scripts actively check target services for known vulnerabilities, such as MS17-010 or Heartbleed.",
     "when_to_use": "Run this after you have identified specific open ports and services, to automatically check if any of them suffer from easily identifiable, high-profile CVEs.",
     "example": "nmap --script vuln 10.10.10.5",
-    "common_pitfalls": "These scripts can be very noisy and occasionally crash fragile, legacy services. Not recommended for stealthy red team engagements."
+    "common_pitfalls": "These scripts can be very noisy and occasionally crash fragile, legacy services. Not recommended for stealthy red team engagements.",
+    "optional_flags": [
+      {
+        "flag": "-v",
+        "description": "Increase verbosity level (use -vv or more for greater effect)"
+      },
+      {
+        "flag": "-Pn",
+        "description": "Treat all hosts as online -- skip host discovery"
+      },
+      {
+        "flag": "-A",
+        "description": "Enable OS detection, version detection, script scanning, and traceroute"
+      }
+    ]
   },
   {
     "id": "masscan-fast-tcp",
     "tool": "masscan",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "port-scanning", "external-network", "high-speed"],
+    "scenario_tags": [
+      "recon",
+      "port-scanning",
+      "external-network",
+      "high-speed"
+    ],
     "platform": "linux",
     "title": "High-Speed TCP Port Scan",
     "command": "sudo masscan -p<ports> <target> --rate=<packet_rate>",
@@ -78,13 +195,20 @@
     "when_to_use": "Use Masscan when you need to discover open ports across massive external network ranges (e.g., a /16 or /8 subnet) where Nmap would be impractically slow.",
     "example": "sudo masscan -p1-65535 10.0.0.0/8 --rate=100000",
     "common_pitfalls": "Setting the rate too high will overwhelm your own router or the target network, causing packet loss and leading you to miss open ports.",
-    "related_ids": ["nmap-syn-scan", "nmap-full-tcp"]
+    "related_ids": [
+      "nmap-syn-scan",
+      "nmap-full-tcp"
+    ]
   },
   {
     "id": "whois-domain",
     "tool": "whois",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "osint", "external-network"],
+    "scenario_tags": [
+      "recon",
+      "osint",
+      "external-network"
+    ],
     "platform": "linux",
     "title": "Query Domain Registration Details",
     "command": "whois <domain>",
@@ -97,7 +221,11 @@
     "id": "dig-any",
     "tool": "dig",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "dns-enumeration", "external-network"],
+    "scenario_tags": [
+      "recon",
+      "dns-enumeration",
+      "external-network"
+    ],
     "platform": "linux",
     "title": "Query All DNS Records",
     "command": "dig ANY <domain> @<nameserver>",
@@ -105,13 +233,20 @@
     "when_to_use": "Use this during external reconnaissance to map out subdomains, mail servers, and text records (which sometimes contain sensitive keys or internal IP addresses).",
     "example": "dig ANY example.com @8.8.8.8",
     "common_pitfalls": "Many modern DNS servers block 'ANY' queries to prevent DNS amplification DDoS attacks. You may need to query specific record types (like MX or TXT) individually.",
-    "related_ids": ["dig-axfr", "nslookup-interactive"]
+    "related_ids": [
+      "dig-axfr",
+      "nslookup-interactive"
+    ]
   },
   {
     "id": "dig-axfr",
     "tool": "dig",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "dns-enumeration", "zone-transfer"],
+    "scenario_tags": [
+      "recon",
+      "dns-enumeration",
+      "zone-transfer"
+    ],
     "platform": "linux",
     "title": "DNS Zone Transfer Attempt",
     "command": "dig axfr <domain> @<nameserver>",
@@ -124,13 +259,19 @@
     "id": "nslookup-interactive",
     "tool": "nslookup",
     "category": "Recon & Scanning",
-    "scenario_tags": ["recon", "dns-enumeration", "windows-native"],
+    "scenario_tags": [
+      "recon",
+      "dns-enumeration",
+      "windows-native"
+    ],
     "platform": "cross-platform",
     "title": "Interactive DNS Queries",
     "command": "nslookup\n> set type=<record_type>\n> <domain>",
     "description": "Starts nslookup in an interactive shell, allowing you to continually query different DNS record types (like MX or TXT) against various domains without retyping the command structure.",
     "when_to_use": "Particularly useful on restricted Windows environments during post-exploitation where 'dig' is not installed, but you still need to enumerate internal DNS records.",
     "example": "nslookup\n> set type=TXT\n> internal.corp.local",
-    "related_ids": ["dig-any"]
+    "related_ids": [
+      "dig-any"
+    ]
   }
 ]

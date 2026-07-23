@@ -34,6 +34,21 @@
         },
         "required": ["label", "url"]
       }
+    },
+    "flag_descriptions": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "optional_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "flag": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["flag", "description"]
+      }
     }
   },
   "required": [
