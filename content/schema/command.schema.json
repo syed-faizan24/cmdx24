@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CommandEntry",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "tool": { "type": "string" },
+    "category": { "type": "string" },
+    "scenario_tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["linux", "windows", "cross-platform"]
+    },
+    "title": { "type": "string" },
+    "command": { "type": "string" },
+    "description": { "type": "string" },
+    "when_to_use": { "type": "string" },
+    "example": { "type": "string" },
+    "common_pitfalls": { "type": "string" },
+    "related_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "further_reading": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        },
+        "required": ["label", "url"]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "tool",
+    "category",
+    "scenario_tags",
+    "platform",
+    "title",
+    "command",
+    "description",
+    "when_to_use",
+    "example"
+  ],
+  "additionalProperties": false
+}

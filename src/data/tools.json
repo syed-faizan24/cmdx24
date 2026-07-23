@@ -1,0 +1,57 @@
+[
+  {
+    "id": "nmap-01",
+    "name": "Nmap",
+    "category": "Network Reconnaissance",
+    "scenarios": ["Initial Recon", "Port Scanning", "Service Discovery"],
+    "description": "A versatile network scanning tool used to discover hosts and services on a computer network. Essential for the initial phases of penetration testing to map out the attack surface.",
+    "examples": [
+      {
+        "description": "Perform a rapid scan of the top 1000 common ports without pinging the host (treat as online).",
+        "command": "nmap -Pn -F <target>"
+      },
+      {
+        "description": "Execute a comprehensive TCP scan, enumerating service versions and running default scripts on open ports.",
+        "command": "nmap -sC -sV -p- -T4 <target>"
+      },
+      {
+        "description": "Scan a target to detect its operating system, guessing aggressively if a perfect match isn't found.",
+        "command": "nmap -O --osscan-guess <target>"
+      }
+    ]
+  },
+  {
+    "id": "linpeas-01",
+    "name": "LinPEAS",
+    "category": "Privilege Escalation",
+    "scenarios": ["Local Enumeration", "Linux Privilege Escalation"],
+    "description": "An exhaustive privilege escalation checker for Linux/Unix environments. It actively searches for misconfigurations, weak permissions, stored credentials, and vulnerable software versions.",
+    "examples": [
+      {
+        "description": "Execute the script directly from a remote host without touching the disk (stealthy execution).",
+        "command": "curl -L https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | sh"
+      },
+      {
+        "description": "Run the script locally and output the results to a file for later offline review, preserving the color formatting.",
+        "command": "./linpeas.sh -a > /tmp/linpeas_report.txt"
+      }
+    ]
+  },
+  {
+    "id": "bloodhound-01",
+    "name": "BloodHound",
+    "category": "Active Directory",
+    "scenarios": ["AD Enumeration", "Domain Dominance"],
+    "description": "An Active Directory visualization tool that uncovers hidden relationships and complex trust paths. Crucial for identifying the shortest path to domain admin privileges.",
+    "examples": [
+      {
+        "description": "Collect comprehensive domain data (users, groups, computers, ACLs) using the Python ingestor.",
+        "command": "bloodhound-python -u <username> -p <password> -ns <domain_controller_ip> -d <domain> -c All"
+      },
+      {
+        "description": "Start the Neo4j database console required to run the BloodHound GUI.",
+        "command": "neo4j console"
+      }
+    ]
+  }
+]

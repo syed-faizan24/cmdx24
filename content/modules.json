@@ -1,0 +1,65 @@
+[
+  {
+    "id": "module-recon",
+    "name": "Recon & Scanning",
+    "description": "Active and passive information gathering techniques.",
+    "icon": "Search",
+    "order": 1
+  },
+  {
+    "id": "module-web",
+    "name": "Web Enumeration",
+    "description": "Tools and techniques for analyzing and attacking web applications.",
+    "icon": "Globe",
+    "order": 2
+  },
+  {
+    "id": "module-passwords",
+    "name": "Password Attacks",
+    "description": "Online brute-forcing and offline password cracking.",
+    "icon": "Key",
+    "order": 3
+  },
+  {
+    "id": "module-exploitation",
+    "name": "Exploitation",
+    "description": "Frameworks and exploits to gain initial access.",
+    "icon": "Zap",
+    "order": 4
+  },
+  {
+    "id": "module-privesc-win",
+    "name": "Windows Privilege Escalation",
+    "description": "Techniques to elevate privileges on a Windows host.",
+    "icon": "Shield",
+    "order": 5
+  },
+  {
+    "id": "module-privesc-linux",
+    "name": "Linux Privilege Escalation",
+    "description": "Techniques to elevate privileges on a Linux host.",
+    "icon": "ShieldAlert",
+    "order": 6
+  },
+  {
+    "id": "module-ad",
+    "name": "Active Directory",
+    "description": "Techniques for enumerating and attacking Windows Active Directory domains.",
+    "icon": "Network",
+    "order": 7
+  },
+  {
+    "id": "module-post-exploit",
+    "name": "Post-Exploitation / Pivoting",
+    "description": "Maintaining access, reverse shells, and pivoting through networks.",
+    "icon": "Route",
+    "order": 8
+  },
+  {
+    "id": "module-cracking",
+    "name": "Cracking & Encoding",
+    "description": "Data transformations, encoding/decoding, and hashing.",
+    "icon": "Binary",
+    "order": 9
+  }
+]

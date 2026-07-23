@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ModuleEntry",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "icon": { "type": "string" },
+    "order": { "type": "number" }
+  },
+  "required": ["id", "name", "description", "icon", "order"],
+  "additionalProperties": false
+}

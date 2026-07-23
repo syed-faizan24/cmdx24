@@ -1,0 +1,39 @@
+[
+  {
+    "id": "encode-base64",
+    "tool": "base64",
+    "category": "Cracking & Encoding",
+    "scenario_tags": ["encoding", "base64"],
+    "platform": "linux",
+    "title": "Base64 Encode a String",
+    "command": "echo -n \"<string>\" | base64",
+    "description": "Encodes a plain text string into Base64 format. The '-n' flag is crucial as it prevents 'echo' from appending a hidden newline character, which would drastically alter the resulting Base64 string.",
+    "when_to_use": "Use this to encode payloads or credentials before inserting them into HTTP headers (like Basic Auth) or when passing complex bash payloads through restricted environments.",
+    "example": "echo -n \"admin:password123\" | base64",
+    "common_pitfalls": "Forgetting the '-n' flag is the most common reason encoded payloads fail to execute on the target."
+  },
+  {
+    "id": "decode-base64",
+    "tool": "base64",
+    "category": "Cracking & Encoding",
+    "scenario_tags": ["encoding", "base64", "decoding"],
+    "platform": "linux",
+    "title": "Base64 Decode a String",
+    "command": "echo -n \"<encoded_string>\" | base64 -d",
+    "description": "Reverses a Base64 encoded string back into plaintext.",
+    "when_to_use": "Use this when you discover suspicious, gibberish-looking text ending in '=' or '==' during enumeration (e.g., in cookies, hidden form fields, or config files).",
+    "example": "echo -n \"YWRtaW46cGFzc3dvcmQxMjM=\" | base64 -d"
+  },
+  {
+    "id": "urlencode-python",
+    "tool": "python3",
+    "category": "Cracking & Encoding",
+    "scenario_tags": ["encoding", "url-encoding", "python"],
+    "platform": "cross-platform",
+    "title": "URL Encode a String (Python)",
+    "command": "python3 -c \"import urllib.parse; print(urllib.parse.quote('<string>'))\"",
+    "description": "Uses Python's standard library to URL-encode a string, ensuring special characters (like spaces, &, and =) are safely transmitted within an HTTP GET request.",
+    "when_to_use": "Essential when manually constructing complex SQL injection or Cross-Site Scripting (XSS) payloads in the terminal to avoid breaking the HTTP request syntax.",
+    "example": "python3 -c \"import urllib.parse; print(urllib.parse.quote('<script>alert(1)</script>'))\""
+  }
+]

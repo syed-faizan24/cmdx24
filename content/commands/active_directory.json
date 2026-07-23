@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ad-sharphound-all",
+    "tool": "SharpHound",
+    "category": "Active Directory",
+    "scenario_tags": ["ad", "enumeration", "bloodhound"],
+    "platform": "windows",
+    "title": "Run Full AD Enumeration (SharpHound)",
+    "command": "Invoke-BloodHound -CollectionMethod All -Domain <domain.local> -ZipFileName <output.zip>",
+    "description": "Executes the SharpHound ingestor using the 'All' collection method. It gathers users, groups, sessions, trusts, and ACLs across the entire domain and packages them into a ZIP file for offline analysis in the BloodHound GUI.",
+    "when_to_use": "Your primary command for mapping an Active Directory environment once you have compromised a domain-joined machine or have valid domain credentials.",
+    "example": "Invoke-BloodHound -CollectionMethod All -Domain corp.local -ZipFileName corp_bloodhound.zip",
+    "common_pitfalls": "The 'All' collection method is extremely noisy and can easily trigger modern EDR alerts due to the massive volume of LDAP queries and remote registry connections.",
+    "further_reading": [
+      {
+        "label": "BloodHound Official Docs",
+        "url": "https://bloodhound.readthedocs.io/en/latest/"
+      }
+    ]
+  },
+  {
+    "id": "ad-ldapsearch-users",
+    "tool": "ldapsearch",
+    "category": "Active Directory",
+    "scenario_tags": ["ad", "enumeration", "ldap"],
+    "platform": "linux",
+    "title": "Extract All Domain Users via LDAP",
+    "command": "ldapsearch -x -h <domain_controller_ip> -b \"DC=<domain>,DC=<local>\" -D \"<domain>\\<username>\" -w '<password>' \"(objectClass=user)\" sAMAccountName",
+    "description": "Connects to the Domain Controller via LDAP using valid credentials to dump a list of all user accounts (specifically extracting the sAMAccountName attribute) in the domain.",
+    "when_to_use": "When you are attacking from a Linux machine and have obtained low-privileged AD credentials, and you need a valid list of usernames for password spraying or AS-REP Roasting.",
+    "example": "ldapsearch -x -h 10.10.10.100 -b \"DC=corp,DC=local\" -D \"corp\\jsmith\" -w 'Password123!' \"(objectClass=user)\" sAMAccountName"
+  },
+  {
+    "id": "ad-net-domain-admins",
+    "tool": "net",
+    "category": "Active Directory",
+    "scenario_tags": ["ad", "enumeration", "cmd"],
+    "platform": "windows",
+    "title": "List Domain Admins",
+    "command": "net group \"Domain Admins\" /domain",
+    "description": "Queries the Domain Controller to list the direct members of the highly privileged 'Domain Admins' group.",
+    "when_to_use": "Use this to identify your ultimate high-value targets within the network. These are the users you want to avoid attacking directly, but whose sessions you want to steal.",
+    "example": "net group \"Domain Admins\" /domain",
+    "common_pitfalls": "This only shows direct members. Nested groups (e.g., an 'IT_Admins' group placed inside 'Domain Admins') will not be recursively expanded by this command."
+  }
+]

