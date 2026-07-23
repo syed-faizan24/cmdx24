@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import Fuse from 'fuse.js';
-import { Search, Star, FileText, ChevronRight } from 'lucide-react';
+import { Search, Star, FileText, ChevronRight, Download, Upload } from 'lucide-react';
 import { useStore } from './store/useStore';
 import { saveFavorites, saveNotes, initStorage, loadFavorites, loadNotes } from './utils/storage';
 import { loadAppData as fetchData } from './utils/data';
 import { checkForUpdates } from './utils/updater';
 import type { CommandEntry, ModuleEntry } from './types';
 import { CommandBuilder } from './components/CommandBuilder';
+import { ToastContainer } from './components/Toast';
 
 function App() {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -21,7 +22,8 @@ function App() {
     selectedModule, setSelectedModule,
     selectedTags, toggleTag,
     favorites, setFavorites, toggleFavorite,
-    notes, setNotes, setNote
+    notes, setNotes, setNote,
+    addToast
   } = useStore();
 
   useEffect(() => {
@@ -52,11 +54,49 @@ function App() {
       const data = await fetchData();
       setModules(data.modules.sort((a, b) => a.order - b.order));
       setCommands(data.commands);
-      alert('Content updated successfully!');
+      addToast('Content updated successfully from remote repository.', 'success');
     } else {
-      alert('You are already on the latest version or offline.');
+      addToast('You are already on the latest version or offline.', 'info');
     }
     setIsUpdating(false);
+  };
+
+  const handleExportData = async () => {
+    const data = JSON.stringify({ favorites, notes });
+    try {
+      if (typeof window !== 'undefined' && (window as any).__TAURI_INTERNALS__) {
+        const { writeText } = await import('@tauri-apps/plugin-clipboard-manager');
+        await writeText(data);
+      } else {
+        await navigator.clipboard.writeText(data);
+      }
+      addToast('Data exported to clipboard!', 'success');
+    } catch (e) {
+      addToast('Failed to export data to clipboard.', 'error');
+    }
+  };
+
+  const handleImportData = async () => {
+    try {
+      let clipboardText = '';
+      if (typeof window !== 'undefined' && (window as any).__TAURI_INTERNALS__) {
+        const { readText } = await import('@tauri-apps/plugin-clipboard-manager');
+        clipboardText = await readText();
+      } else {
+        clipboardText = await navigator.clipboard.readText();
+      }
+      
+      const parsed = JSON.parse(clipboardText);
+      if (parsed.favorites && Array.isArray(parsed.favorites)) {
+        setFavorites([...new Set([...favorites, ...parsed.favorites])]);
+      }
+      if (parsed.notes) {
+        setNotes({ ...notes, ...parsed.notes });
+      }
+      addToast('Data imported successfully!', 'success');
+    } catch (e) {
+      addToast('Invalid data format in clipboard.', 'error');
+    }
   };
 
   // Extract all unique scenario tags
@@ -111,7 +151,7 @@ function App() {
 
   return (
     <div className="min-h-screen w-full bg-bg-base text-gray-200 flex overflow-hidden font-sans">
-      
+      <ToastContainer />
       {/* Sidebar */}
       <aside className="w-72 bg-bg-surface border-r border-bg-active flex flex-col z-10 shrink-0">
         <div className="p-5 border-b border-bg-active">
@@ -153,12 +193,28 @@ function App() {
           </div>
         </nav>
         
-        {/* Update Button */}
-        <div className="p-4 border-t border-bg-active">
+        {/* Actions Footer */}
+        <div className="p-4 border-t border-bg-active flex flex-col gap-2">
+          <div className="flex gap-2">
+            <button
+              onClick={handleExportData}
+              title="Export favorites & notes to clipboard"
+              className="flex-1 px-2 py-2 flex items-center justify-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider transition-colors border bg-bg-surface border-bg-active text-gray-400 hover:text-brand-primary hover:border-brand-primary"
+            >
+              <Upload className="w-3.5 h-3.5" /> Export
+            </button>
+            <button
+              onClick={handleImportData}
+              title="Import favorites & notes from clipboard"
+              className="flex-1 px-2 py-2 flex items-center justify-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider transition-colors border bg-bg-surface border-bg-active text-gray-400 hover:text-brand-primary hover:border-brand-primary"
+            >
+              <Download className="w-3.5 h-3.5" /> Import
+            </button>
+          </div>
           <button
             onClick={handleUpdate}
             disabled={isUpdating}
-            className="w-full px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider transition-colors border bg-bg-surface border-bg-active text-gray-400 hover:text-brand-primary hover:border-brand-primary disabled:opacity-50"
+            className="w-full px-4 py-2 mt-1 text-xs font-mono font-bold uppercase tracking-wider transition-colors border bg-bg-surface border-brand-primary/20 text-brand-primary hover:bg-brand-primary/10 disabled:opacity-50"
           >
             {isUpdating ? 'Checking...' : 'Check for Updates'}
           </button>

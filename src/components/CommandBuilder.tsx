@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import { useStore } from '../store/useStore';
 
 declare global {
   interface Window {
@@ -16,6 +17,7 @@ interface CommandBuilderProps {
 export const CommandBuilder: React.FC<CommandBuilderProps> = ({ commandTemplate }) => {
   const [values, setValues] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState(false);
+  const { addToast } = useStore();
 
   // Extract placeholders like <target>, <wordlist>, etc.
   const placeholders = Array.from(new Set(
@@ -38,9 +40,11 @@ export const CommandBuilder: React.FC<CommandBuilderProps> = ({ commandTemplate 
         await navigator.clipboard.writeText(finalCommand);
       }
       setCopied(true);
+      addToast('Command copied to clipboard!', 'success');
       setTimeout(() => setCopied(false), 2000);
     } catch (e) {
       console.error('Failed to copy', e);
+      addToast('Failed to copy command.', 'error');
     }
   };
 

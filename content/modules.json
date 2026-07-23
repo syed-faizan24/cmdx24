@@ -61,5 +61,12 @@
     "description": "Data transformations, encoding/decoding, and hashing.",
     "icon": "Binary",
     "order": 9
+  },
+  {
+    "id": "module-revshells",
+    "name": "Reverse Shells & Payloads",
+    "description": "Essential reverse shell payloads for various languages and environments.",
+    "icon": "TerminalSquare",
+    "order": 10
   }
 ]

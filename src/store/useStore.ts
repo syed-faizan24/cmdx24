@@ -20,6 +20,10 @@ interface AppState {
   notes: Record<string, string>;
   setNote: (id: string, note: string) => void;
   setNotes: (notes: Record<string, string>) => void;
+
+  toasts: { id: string, message: string, type: 'info' | 'success' | 'error' }[];
+  addToast: (message: string, type?: 'info' | 'success' | 'error') => void;
+  removeToast: (id: string) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -51,5 +55,13 @@ export const useStore = create<AppState>((set) => ({
   setNote: (id, note) => set((state) => ({
     notes: { ...state.notes, [id]: note }
   })),
-  setNotes: (notes) => set({ notes })
+  setNotes: (notes) => set({ notes }),
+
+  toasts: [],
+  addToast: (message, type = 'info') => set((state) => ({
+    toasts: [...state.toasts, { id: Math.random().toString(36).substring(2, 9), message, type }]
+  })),
+  removeToast: (id) => set((state) => ({
+    toasts: state.toasts.filter(t => t.id !== id)
+  }))
 }));
