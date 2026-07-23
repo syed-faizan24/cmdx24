@@ -1,0 +1,266 @@
+[
+  {
+    "id": "thm-101-linux-find",
+    "module_id": "module-thm-101",
+    "title": "Find Files (Linux)",
+    "description": "Search for files in a directory hierarchy based on names or types.",
+    "command": "find <directory> -name <filename>",
+    "tool": "find",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["linux", "basics", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "When you need to locate a specific file on a Linux file system during a CTF or initial enumeration.",
+    "example": "find /var/www/html -name \"config.php\"",
+    "flag_descriptions": {
+      "-name": "Search for files with a specific name"
+    },
+    "optional_flags": [
+      { "flag": "-type f", "description": "Only search for files (not directories)" },
+      { "flag": "2>/dev/null", "description": "Hide permission denied errors" }
+    ]
+  },
+  {
+    "id": "thm-101-linux-grep",
+    "module_id": "module-thm-101",
+    "title": "Search File Contents (Linux)",
+    "description": "Print lines matching a pattern. Extremely useful for finding passwords in config files.",
+    "command": "grep [FLAGS] <pattern> <file_or_directory>",
+    "tool": "grep",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["linux", "basics", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "When searching for passwords, specific keywords, or parsing log files.",
+    "example": "grep -ri \"password\" /var/www/",
+    "optional_flags": [
+      { "flag": "-i", "description": "Case-insensitive search" },
+      { "flag": "-r", "description": "Search recursively in directories" },
+      { "flag": "-n", "description": "Print line numbers" }
+    ]
+  },
+  {
+    "id": "thm-101-linux-permissions",
+    "module_id": "module-thm-101",
+    "title": "Change File Permissions (Linux)",
+    "description": "Modify the read/write/execute permissions of a file (e.g., making a script executable).",
+    "command": "chmod <permissions> <file>",
+    "tool": "chmod",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["linux", "basics", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "When you upload an exploit or script to a target machine and need to make it executable.",
+    "example": "chmod +x exploit.sh",
+    "optional_flags": [
+      { "flag": "+x", "description": "Add execute permissions" },
+      { "flag": "777", "description": "Give full read/write/execute permissions to everyone (dangerous!)" }
+    ]
+  },
+  {
+    "id": "thm-101-win-users",
+    "module_id": "module-thm-101",
+    "title": "List Local Users (Windows)",
+    "description": "Enumerate the local users on a Windows machine using PowerShell.",
+    "command": "Get-LocalUser",
+    "tool": "powershell",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["windows", "basics", "thm-101"],
+    "platform": "windows",
+    "when_to_use": "During initial post-exploitation on a Windows host to see who has accounts.",
+    "example": "Get-LocalUser"
+  },
+  {
+    "id": "thm-101-win-sysinfo",
+    "module_id": "module-thm-101",
+    "title": "System Information (Windows)",
+    "description": "Displays detailed configuration information about a computer and its operating system.",
+    "command": "systeminfo",
+    "tool": "cmd",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["windows", "basics", "thm-101"],
+    "platform": "windows",
+    "when_to_use": "To gather OS version, build number, and hotfix info to look for unpatched privilege escalation vulnerabilities.",
+    "example": "systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\""
+  },
+  {
+    "id": "thm-101-net-ip",
+    "module_id": "module-thm-101",
+    "title": "Check IP Address (Linux)",
+    "description": "Show / manipulate routing, network devices, interfaces and tunnels.",
+    "command": "ip addr",
+    "tool": "ip",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["networking", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "To find out what your own IP address is (e.g., your TryHackMe VPN IP for a reverse shell).",
+    "example": "ip addr show tun0"
+  },
+  {
+    "id": "thm-101-net-ping",
+    "module_id": "module-thm-101",
+    "title": "ICMP Echo Request (Ping)",
+    "description": "Send ICMP ECHO_REQUEST to network hosts to check if they are online.",
+    "command": "ping [FLAGS] <target>",
+    "tool": "ping",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["networking", "thm-101"],
+    "platform": "cross-platform",
+    "when_to_use": "To verify network connectivity to a target machine.",
+    "example": "ping -c 4 10.10.10.10",
+    "optional_flags": [
+      { "flag": "-c 4", "description": "Stop after sending 4 packets (Linux)" }
+    ]
+  },
+  {
+    "id": "thm-101-nmap-basic",
+    "module_id": "module-thm-101",
+    "title": "Basic Nmap Scan",
+    "description": "The most fundamental Nmap scan taught in THM. Scans the top 1,000 ports.",
+    "command": "nmap [FLAGS] <target>",
+    "tool": "nmap",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["scanning", "nmap", "thm-101"],
+    "platform": "cross-platform",
+    "when_to_use": "As the very first step in enumerating a target machine to see what services are running.",
+    "example": "nmap -sV -sC 10.10.10.10",
+    "optional_flags": [
+      { "flag": "-sV", "description": "Attempt to determine the version of the services running on open ports" },
+      { "flag": "-sC", "description": "Run default Nmap scripts for vulnerability discovery" },
+      { "flag": "-p-", "description": "Scan all 65535 ports instead of the top 1000" },
+      { "flag": "-Pn", "description": "Skip host discovery (treat the host as online)" }
+    ]
+  },
+  {
+    "id": "thm-101-nmap-aggr",
+    "module_id": "module-thm-101",
+    "title": "Aggressive Nmap Scan",
+    "description": "An aggressive Nmap scan that combines OS detection, version scanning, script scanning, and traceroute.",
+    "command": "nmap -A [FLAGS] <target>",
+    "tool": "nmap",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["scanning", "nmap", "thm-101"],
+    "platform": "cross-platform",
+    "when_to_use": "When you want to gather as much information as possible quickly and stealth is not a concern.",
+    "example": "nmap -A -T4 10.10.10.10",
+    "flag_descriptions": {
+      "-A": "Enable OS detection, version detection, script scanning, and traceroute"
+    },
+    "optional_flags": [
+      { "flag": "-T4", "description": "Set timing template to aggressive (faster)" }
+    ]
+  },
+  {
+    "id": "thm-101-gobuster-dir",
+    "module_id": "module-thm-101",
+    "title": "Web Directory Brute-Forcing",
+    "description": "Use Gobuster to find hidden directories and files on a web server.",
+    "command": "gobuster dir -u <url> -w <wordlist> [FLAGS]",
+    "tool": "gobuster",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["web", "enumeration", "thm-101"],
+    "platform": "cross-platform",
+    "when_to_use": "When you find a web server on a target and want to discover hidden admin panels or interesting files.",
+    "example": "gobuster dir -u http://10.10.10.10 -w /usr/share/wordlists/dirb/common.txt",
+    "flag_descriptions": {
+      "dir": "Directory brute-forcing mode",
+      "-u": "Target URL",
+      "-w": "Path to the wordlist"
+    },
+    "optional_flags": [
+      { "flag": "-x php,html,txt", "description": "Also search for specific file extensions" },
+      { "flag": "-t 50", "description": "Run with 50 concurrent threads to speed up the scan" }
+    ]
+  },
+  {
+    "id": "thm-101-hydra-ssh",
+    "module_id": "module-thm-101",
+    "title": "Brute-Force SSH (Hydra)",
+    "description": "Use Hydra to guess the password for an SSH service.",
+    "command": "hydra -l <username> -P <wordlist> <target> ssh [FLAGS]",
+    "tool": "hydra",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["cracking", "ssh", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "When you know a username on the target and SSH is open, and you want to try common passwords.",
+    "example": "hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.10.10 ssh",
+    "flag_descriptions": {
+      "-l": "Specific login username",
+      "-P": "Path to the password wordlist",
+      "ssh": "The protocol to attack"
+    },
+    "optional_flags": [
+      { "flag": "-t 4", "description": "Number of parallel tasks (threads)" },
+      { "flag": "-V", "description": "Verbose mode (show every attempt)" }
+    ]
+  },
+  {
+    "id": "thm-101-msfconsole-start",
+    "module_id": "module-thm-101",
+    "title": "Start Metasploit Framework",
+    "description": "Launch the Metasploit Framework console to exploit known vulnerabilities.",
+    "command": "msfconsole [FLAGS]",
+    "tool": "msfconsole",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["exploitation", "metasploit", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "When you have discovered a vulnerability (e.g., EternalBlue, vsftpd backdoor) and want to use a pre-built exploit.",
+    "example": "msfconsole -q",
+    "optional_flags": [
+      { "flag": "-q", "description": "Quiet mode (don't print the startup banner)" }
+    ]
+  },
+  {
+    "id": "thm-101-tcpdump",
+    "module_id": "module-thm-101",
+    "title": "Capture Packets (tcpdump)",
+    "description": "A command-line packet analyzer. Used to intercept and display TCP/IP packets being transmitted.",
+    "command": "tcpdump -i <interface> [FLAGS]",
+    "tool": "tcpdump",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["defensive", "networking", "thm-101"],
+    "platform": "linux",
+    "when_to_use": "During defensive exercises to monitor live network traffic for suspicious activity.",
+    "example": "tcpdump -i eth0 port 80",
+    "flag_descriptions": {
+      "-i": "Specify the network interface to listen on"
+    },
+    "optional_flags": [
+      { "flag": "-n", "description": "Don't resolve hostnames (makes it faster)" },
+      { "flag": "-X", "description": "Show the packet payload in both HEX and ASCII" }
+    ]
+  },
+  {
+    "id": "thm-101-john",
+    "module_id": "module-thm-101",
+    "title": "Crack Passwords (John the Ripper)",
+    "description": "Crack password hashes using a wordlist.",
+    "command": "john --wordlist=<wordlist> [FLAGS] <hash_file>",
+    "tool": "john",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["cracking", "passwords", "thm-101"],
+    "platform": "cross-platform",
+    "when_to_use": "When you have dumped password hashes (e.g., /etc/shadow or NTLM hashes) and want to crack them offline.",
+    "example": "john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt",
+    "flag_descriptions": {
+      "--wordlist": "Path to the dictionary file"
+    },
+    "optional_flags": [
+      { "flag": "--format=raw-md5", "description": "Specify the hash format if John cannot auto-detect it" }
+    ]
+  },
+  {
+    "id": "thm-101-hashcat",
+    "module_id": "module-thm-101",
+    "title": "Crack Passwords (Hashcat)",
+    "description": "Advanced password recovery utility. Often faster than John because it uses the GPU.",
+    "command": "hashcat -m <hash_type> -a <attack_mode> <hash_file> <wordlist>",
+    "tool": "hashcat",
+    "category": "THM: CyberSec 101",
+    "scenario_tags": ["cracking", "passwords", "thm-101"],
+    "platform": "cross-platform",
+    "when_to_use": "For offline password cracking when you need maximum performance.",
+    "example": "hashcat -m 0 -a 0 hash.txt /usr/share/wordlists/rockyou.txt",
+    "flag_descriptions": {
+      "-m": "Hash type (e.g., 0 for MD5, 1000 for NTLM)",
+      "-a": "Attack mode (e.g., 0 for Straight/Wordlist)"
+    }
+  }
+]

@@ -68,5 +68,12 @@
     "description": "Essential reverse shell payloads for various languages and environments.",
     "icon": "TerminalSquare",
     "order": 10
+  },
+  {
+    "id": "module-thm-101",
+    "name": "THM: CyberSec 101",
+    "description": "Foundational commands taught in the TryHackMe Cyber Security 101 pathway.",
+    "icon": "GraduationCap",
+    "order": 11
   }
 ]
