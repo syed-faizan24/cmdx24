@@ -8,6 +8,7 @@ import { checkForUpdates } from './utils/updater';
 import type { CommandEntry, ModuleEntry } from './types';
 import { CommandBuilder } from './components/CommandBuilder';
 import { ToastContainer } from './components/Toast';
+import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 
 function App() {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -65,7 +66,6 @@ function App() {
     const data = JSON.stringify({ favorites, notes });
     try {
       if (typeof window !== 'undefined' && (window as any).__TAURI_INTERNALS__) {
-        const { writeText } = await import('@tauri-apps/plugin-clipboard-manager');
         await writeText(data);
       } else {
         await navigator.clipboard.writeText(data);
@@ -80,8 +80,7 @@ function App() {
     try {
       let clipboardText = '';
       if (typeof window !== 'undefined' && (window as any).__TAURI_INTERNALS__) {
-        const { readText } = await import('@tauri-apps/plugin-clipboard-manager');
-        clipboardText = await readText();
+        clipboardText = await readText() || '';
       } else {
         clipboardText = await navigator.clipboard.readText();
       }
