@@ -1,670 +1,974 @@
 [
   {
-    "id": "thm-101-linux-ls",
-    "module_id": "module-thm-101",
-    "title": "List Directory Contents (Linux)",
-    "description": "List information about the files in the current directory. Taught in Linux Fundamentals Part 1.",
-    "command": "ls [FLAGS] <directory>",
-    "tool": "ls",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To view files and directories.",
-    "example": "ls -la /var/www/html",
-    "flag_descriptions": { "-la": "List all files including hidden, in long format" },
-    "optional_flags": [
-      { "flag": "-l", "description": "Long listing format" },
-      { "flag": "-a", "description": "Show hidden files (starting with .)" },
-      { "flag": "-h", "description": "Human-readable file sizes" }
-    ]
-  },
-  {
-    "id": "thm-101-linux-cd",
-    "module_id": "module-thm-101",
-    "title": "Change Directory (Linux)",
-    "description": "Change the current working directory.",
-    "command": "cd <directory>",
-    "tool": "cd",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To navigate the filesystem.",
-    "example": "cd /etc/"
-  },
-  {
-    "id": "thm-101-linux-cat",
-    "module_id": "module-thm-101",
-    "title": "Concatenate Files (Linux)",
-    "description": "Read and output the contents of a file to the terminal.",
-    "command": "cat <file>",
-    "tool": "cat",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To quickly view the contents of a small text file.",
-    "example": "cat /etc/passwd"
-  },
-  {
-    "id": "thm-101-linux-find",
-    "module_id": "module-thm-101",
-    "title": "Find Files (Linux)",
-    "description": "Search for files in a directory hierarchy.",
-    "command": "find <directory> -name <filename>",
-    "tool": "find",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To locate a specific file, such as a flag.txt in a CTF.",
-    "example": "find / -name \"user.txt\" 2>/dev/null",
-    "flag_descriptions": { "-name": "Search by filename" },
-    "optional_flags": [
-      { "flag": "-type f", "description": "Only search for files" },
-      { "flag": "-type d", "description": "Only search for directories" },
-      { "flag": "2>/dev/null", "description": "Hide permission denied errors" }
-    ]
-  },
-  {
-    "id": "thm-101-linux-grep",
-    "module_id": "module-thm-101",
-    "title": "Search Text (Linux)",
-    "description": "Print lines matching a pattern.",
-    "command": "grep [FLAGS] <pattern> <file>",
-    "tool": "grep",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To search for specific keywords, like 'password', in configuration files.",
-    "example": "grep -ri \"password\" /var/www/",
-    "optional_flags": [
-      { "flag": "-i", "description": "Case-insensitive search" },
-      { "flag": "-r", "description": "Search recursively in directories" },
-      { "flag": "-v", "description": "Invert match (show lines that do NOT match)" }
-    ]
-  },
-  {
-    "id": "thm-101-linux-chmod",
-    "module_id": "module-thm-101",
-    "title": "Change Permissions (Linux)",
-    "description": "Modify the read/write/execute permissions of a file.",
-    "command": "chmod <permissions> <file>",
-    "tool": "chmod",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To make an uploaded script executable.",
-    "example": "chmod +x LinEnum.sh",
-    "optional_flags": [
-      { "flag": "+x", "description": "Make file executable" },
-      { "flag": "777", "description": "Grant full permissions to everyone" }
-    ]
-  },
-  {
-    "id": "thm-101-linux-chown",
-    "module_id": "module-thm-101",
-    "title": "Change Owner (Linux)",
-    "description": "Change the file owner and group.",
-    "command": "chown <user>:<group> <file>",
-    "tool": "chown",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To take ownership of a file.",
-    "example": "chown root:root secret.txt"
-  },
-  {
-    "id": "thm-101-linux-su",
-    "module_id": "module-thm-101",
-    "title": "Switch User (Linux)",
-    "description": "Run a command with substitute user and group ID.",
-    "command": "su <user>",
-    "tool": "su",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To switch to another user account during lateral movement.",
-    "example": "su root"
-  },
-  {
-    "id": "thm-101-linux-sudo",
-    "module_id": "module-thm-101",
-    "title": "Execute as Root (Linux)",
-    "description": "Execute a command as the superuser.",
-    "command": "sudo <command>",
-    "tool": "sudo",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics", "privesc"],
-    "platform": "linux",
-    "when_to_use": "To run a command with elevated privileges.",
-    "example": "sudo -l",
-    "optional_flags": [
-      { "flag": "-l", "description": "List commands the user can run via sudo (Great for PrivEsc!)" }
-    ]
-  },
-  {
-    "id": "thm-101-linux-wget",
-    "module_id": "module-thm-101",
-    "title": "Download File (wget)",
-    "description": "Non-interactive network downloader.",
-    "command": "wget <url>",
-    "tool": "wget",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "networking"],
-    "platform": "linux",
-    "when_to_use": "To download exploits or enumeration scripts to a target machine.",
-    "example": "wget http://10.10.10.10:8000/linpeas.sh"
-  },
-  {
-    "id": "thm-101-linux-tar",
-    "module_id": "module-thm-101",
-    "title": "Extract Archive (tar)",
-    "description": "Extract a compressed tarball archive.",
-    "command": "tar -xvf <archive_file>",
-    "tool": "tar",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "basics"],
-    "platform": "linux",
-    "when_to_use": "To decompress a .tar.gz file.",
-    "example": "tar -xvf backup.tar.gz"
-  },
-  {
-    "id": "thm-101-linux-ssh",
-    "module_id": "module-thm-101",
-    "title": "SSH Login",
-    "description": "Log into a remote machine using SSH.",
-    "command": "ssh <username>@<target>",
-    "tool": "ssh",
-    "category": "Linux Fundamentals",
-    "scenario_tags": ["linux", "networking"],
+    "id": "thm-101-1",
+    "tool": "Note",
+    "category": "Intro to Offensive Security",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To gain a secure shell on a target after discovering credentials.",
-    "example": "ssh admin@10.10.10.10"
-  },
-  
-  {
-    "id": "thm-101-win-dir",
-    "module_id": "module-thm-101",
-    "title": "List Directory (Windows)",
-    "description": "Displays a list of files and subdirectories in a directory.",
-    "command": "dir",
-    "tool": "cmd",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "basics"],
-    "platform": "windows",
-    "when_to_use": "To view files in CMD.",
-    "example": "dir /a"
+    "title": "Key Concepts for Intro to Offensive Security",
+    "command": "echo \"Review notes for Intro to Offensive Security\"",
+    "description": "A placeholder entry for the Intro to Offensive Security room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Intro to Offensive Security module on TryHackMe.",
+    "example": "echo \"Review notes for Intro to Offensive Security\""
   },
   {
-    "id": "thm-101-win-type",
-    "module_id": "module-thm-101",
-    "title": "Read File (Windows)",
-    "description": "Displays the contents of a text file.",
-    "command": "type <file>",
-    "tool": "cmd",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "basics"],
-    "platform": "windows",
-    "when_to_use": "To read a flag.txt file on a Windows target.",
-    "example": "type C:\\Users\\Administrator\\Desktop\\root.txt"
-  },
-  {
-    "id": "thm-101-win-sysinfo",
-    "module_id": "module-thm-101",
-    "title": "System Information (Windows)",
-    "description": "Displays detailed OS configuration information.",
-    "command": "systeminfo",
-    "tool": "cmd",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "basics"],
-    "platform": "windows",
-    "when_to_use": "To gather OS version and hotfix data for privilege escalation.",
-    "example": "systeminfo"
-  },
-  {
-    "id": "thm-101-win-netuser",
-    "module_id": "module-thm-101",
-    "title": "Local Users (Windows CMD)",
-    "description": "Display user accounts on the computer.",
-    "command": "net user",
-    "tool": "cmd",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "basics"],
-    "platform": "windows",
-    "when_to_use": "To enumerate valid user accounts.",
-    "example": "net user administrator"
-  },
-  {
-    "id": "thm-101-win-netlocalgroup",
-    "module_id": "module-thm-101",
-    "title": "Local Groups (Windows CMD)",
-    "description": "Display local groups on the computer.",
-    "command": "net localgroup Administrators",
-    "tool": "cmd",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "basics"],
-    "platform": "windows",
-    "when_to_use": "To see which users have admin privileges.",
-    "example": "net localgroup Administrators"
-  },
-  {
-    "id": "thm-101-win-tasklist",
-    "module_id": "module-thm-101",
-    "title": "List Running Processes (Windows)",
-    "description": "Displays a list of currently running processes.",
-    "command": "tasklist",
-    "tool": "cmd",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "basics"],
-    "platform": "windows",
-    "when_to_use": "To identify anti-virus, security software, or vulnerable services running.",
-    "example": "tasklist /svc"
-  },
-  {
-    "id": "thm-101-win-ps-users",
-    "module_id": "module-thm-101",
-    "title": "Local Users (PowerShell)",
-    "description": "Enumerate local users using PowerShell.",
-    "command": "Get-LocalUser",
-    "tool": "powershell",
-    "category": "Windows Fundamentals",
-    "scenario_tags": ["windows", "powershell"],
-    "platform": "windows",
-    "when_to_use": "Modern way to enumerate users on Windows.",
-    "example": "Get-LocalUser"
-  },
-
-  {
-    "id": "thm-101-net-ip",
-    "module_id": "module-thm-101",
-    "title": "Check IP Address (Linux)",
-    "description": "Show routing and network devices.",
-    "command": "ip addr",
-    "tool": "ip",
-    "category": "Networking",
-    "scenario_tags": ["linux", "networking"],
-    "platform": "linux",
-    "when_to_use": "To find your TryHackMe VPN IP.",
-    "example": "ip addr show tun0"
-  },
-  {
-    "id": "thm-101-net-ipconfig",
-    "module_id": "module-thm-101",
-    "title": "Check IP Address (Windows)",
-    "description": "Displays all current TCP/IP network configuration values.",
-    "command": "ipconfig /all",
-    "tool": "cmd",
-    "category": "Networking",
-    "scenario_tags": ["windows", "networking"],
-    "platform": "windows",
-    "when_to_use": "To check IP addressing and DNS settings.",
-    "example": "ipconfig /all"
-  },
-  {
-    "id": "thm-101-net-ping",
-    "module_id": "module-thm-101",
-    "title": "ICMP Ping",
-    "description": "Send ICMP ECHO_REQUEST to check if a host is alive.",
-    "command": "ping [FLAGS] <target>",
-    "tool": "ping",
-    "category": "Networking",
-    "scenario_tags": ["networking"],
+    "id": "thm-101-2",
+    "tool": "Note",
+    "category": "Intro to Defensive Security",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To verify network connectivity.",
-    "example": "ping -c 4 10.10.10.10",
-    "optional_flags": [
-      { "flag": "-c 4", "description": "Stop after sending 4 packets (Linux)" }
-    ]
+    "title": "Key Concepts for Intro to Defensive Security",
+    "command": "echo \"Review notes for Intro to Defensive Security\"",
+    "description": "A placeholder entry for the Intro to Defensive Security room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Intro to Defensive Security module on TryHackMe.",
+    "example": "echo \"Review notes for Intro to Defensive Security\""
   },
   {
-    "id": "thm-101-net-netstat",
-    "module_id": "module-thm-101",
-    "title": "Network Statistics (netstat)",
-    "description": "Displays active TCP connections, listening ports, and routing tables.",
-    "command": "netstat -ano",
-    "tool": "netstat",
-    "category": "Networking",
-    "scenario_tags": ["networking", "windows", "linux"],
+    "id": "thm-101-3",
+    "tool": "Note",
+    "category": "Tutorial",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To identify what services are listening internally on a compromised host.",
-    "example": "netstat -ano",
-    "flag_descriptions": {
-      "-a": "Displays all active connections and listening ports",
-      "-n": "Displays active TCP connections numerically (no DNS resolution)",
-      "-o": "Displays active TCP connections and includes the process ID (PID) for each connection (Windows)"
-    }
+    "title": "Key Concepts for Tutorial",
+    "command": "echo \"Review notes for Tutorial\"",
+    "description": "A placeholder entry for the Tutorial room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Tutorial module on TryHackMe.",
+    "example": "echo \"Review notes for Tutorial\""
   },
-
   {
-    "id": "thm-101-nmap-basic",
-    "module_id": "module-thm-101",
-    "title": "Nmap: Top 1000 Ports",
-    "description": "Basic port scan for the 1,000 most common ports.",
-    "command": "nmap [FLAGS] <target>",
-    "tool": "nmap",
-    "category": "Nmap Scanning",
-    "scenario_tags": ["scanning", "nmap"],
+    "id": "thm-101-4",
+    "tool": "Note",
+    "category": "Linux Fundamentals Part 1",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "The first step in enumerating a target.",
-    "example": "nmap 10.10.10.10",
-    "optional_flags": [
-      { "flag": "-sV", "description": "Attempt to determine the version of the services running" },
-      { "flag": "-sC", "description": "Run default Nmap scripts" },
-      { "flag": "-Pn", "description": "Skip host discovery (treat the host as online)" }
-    ]
+    "title": "Key Concepts for Linux Fundamentals Part 1",
+    "command": "echo \"Review notes for Linux Fundamentals Part 1\"",
+    "description": "A placeholder entry for the Linux Fundamentals Part 1 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Linux Fundamentals Part 1 module on TryHackMe.",
+    "example": "echo \"Review notes for Linux Fundamentals Part 1\""
   },
   {
-    "id": "thm-101-nmap-allports",
-    "module_id": "module-thm-101",
-    "title": "Nmap: All 65535 Ports",
-    "description": "Scan every TCP port to ensure nothing is missed.",
-    "command": "nmap -p- [FLAGS] <target>",
-    "tool": "nmap",
-    "category": "Nmap Scanning",
-    "scenario_tags": ["scanning", "nmap"],
+    "id": "thm-101-5",
+    "tool": "Note",
+    "category": "Linux Fundamentals Part 2",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "When the basic scan finishes and you want to look for obscure ports.",
-    "example": "nmap -p- -T4 10.10.10.10",
-    "flag_descriptions": { "-p-": "Scan all 65535 ports" },
-    "optional_flags": [
-      { "flag": "-T4", "description": "Aggressive timing (faster scan)" }
-    ]
+    "title": "Key Concepts for Linux Fundamentals Part 2",
+    "command": "echo \"Review notes for Linux Fundamentals Part 2\"",
+    "description": "A placeholder entry for the Linux Fundamentals Part 2 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Linux Fundamentals Part 2 module on TryHackMe.",
+    "example": "echo \"Review notes for Linux Fundamentals Part 2\""
   },
   {
-    "id": "thm-101-nmap-udp",
-    "module_id": "module-thm-101",
-    "title": "Nmap: UDP Scan",
-    "description": "Scan for open UDP ports (requires root/sudo).",
-    "command": "sudo nmap -sU [FLAGS] <target>",
-    "tool": "nmap",
-    "category": "Nmap Scanning",
-    "scenario_tags": ["scanning", "nmap"],
-    "platform": "linux",
-    "when_to_use": "To check for services like SNMP, DNS, or TFTP running on UDP.",
-    "example": "sudo nmap -sU --top-ports 100 10.10.10.10",
-    "flag_descriptions": { "-sU": "UDP Scan" },
-    "optional_flags": [
-      { "flag": "--top-ports 100", "description": "Only scan the top 100 most common UDP ports (much faster)" }
-    ]
-  },
-  {
-    "id": "thm-101-nmap-aggr",
-    "module_id": "module-thm-101",
-    "title": "Nmap: Aggressive Scan",
-    "description": "Combines OS detection, version scanning, script scanning, and traceroute.",
-    "command": "nmap -A [FLAGS] <target>",
-    "tool": "nmap",
-    "category": "Nmap Scanning",
-    "scenario_tags": ["scanning", "nmap"],
+    "id": "thm-101-6",
+    "tool": "Note",
+    "category": "Linux Fundamentals Part 3",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To gather as much information as possible quickly.",
-    "example": "nmap -A -T4 10.10.10.10",
-    "flag_descriptions": { "-A": "Enable OS detection, version detection, script scanning, and traceroute" }
+    "title": "Key Concepts for Linux Fundamentals Part 3",
+    "command": "echo \"Review notes for Linux Fundamentals Part 3\"",
+    "description": "A placeholder entry for the Linux Fundamentals Part 3 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Linux Fundamentals Part 3 module on TryHackMe.",
+    "example": "echo \"Review notes for Linux Fundamentals Part 3\""
   },
-
   {
-    "id": "thm-101-curl-headers",
-    "module_id": "module-thm-101",
-    "title": "Check HTTP Headers (cURL)",
-    "description": "Fetch only the HTTP response headers.",
-    "command": "curl -I <url>",
-    "tool": "curl",
-    "category": "Web Enumeration",
-    "scenario_tags": ["web", "enumeration"],
+    "id": "thm-101-7",
+    "tool": "Note",
+    "category": "Windows Fundamentals 1",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To quickly check the Server version or missing security headers.",
-    "example": "curl -I http://10.10.10.10",
-    "flag_descriptions": { "-I": "Fetch the headers only" }
+    "title": "Key Concepts for Windows Fundamentals 1",
+    "command": "echo \"Review notes for Windows Fundamentals 1\"",
+    "description": "A placeholder entry for the Windows Fundamentals 1 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Windows Fundamentals 1 module on TryHackMe.",
+    "example": "echo \"Review notes for Windows Fundamentals 1\""
   },
   {
-    "id": "thm-101-gobuster-dir",
-    "module_id": "module-thm-101",
-    "title": "Web Directory Brute-Forcing (Gobuster)",
-    "description": "Use Gobuster to find hidden directories and files on a web server.",
-    "command": "gobuster dir -u <url> -w <wordlist> [FLAGS]",
-    "tool": "gobuster",
-    "category": "Web Enumeration",
-    "scenario_tags": ["web", "enumeration", "bruteforce"],
+    "id": "thm-101-8",
+    "tool": "Note",
+    "category": "Windows Fundamentals 2",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To discover hidden admin panels or interesting files.",
-    "example": "gobuster dir -u http://10.10.10.10 -w /usr/share/wordlists/dirb/common.txt",
-    "flag_descriptions": {
-      "dir": "Directory brute-forcing mode",
-      "-u": "Target URL",
-      "-w": "Path to the wordlist"
-    },
-    "optional_flags": [
-      { "flag": "-x php,html,txt", "description": "Also search for specific file extensions" },
-      { "flag": "-t 50", "description": "Run with 50 concurrent threads" }
-    ]
+    "title": "Key Concepts for Windows Fundamentals 2",
+    "command": "echo \"Review notes for Windows Fundamentals 2\"",
+    "description": "A placeholder entry for the Windows Fundamentals 2 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Windows Fundamentals 2 module on TryHackMe.",
+    "example": "echo \"Review notes for Windows Fundamentals 2\""
   },
   {
-    "id": "thm-101-ffuf-dir",
-    "module_id": "module-thm-101",
-    "title": "Fuzzing Directories (ffuf)",
-    "description": "Fast web fuzzer written in Go. Used similarly to Gobuster.",
-    "command": "ffuf -u <url>/FUZZ -w <wordlist> [FLAGS]",
-    "tool": "ffuf",
-    "category": "Web Enumeration",
-    "scenario_tags": ["web", "enumeration", "fuzzing"],
+    "id": "thm-101-9",
+    "tool": "Note",
+    "category": "Windows Fundamentals 3",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "A faster alternative to Gobuster for discovering web paths.",
-    "example": "ffuf -u http://10.10.10.10/FUZZ -w /usr/share/wordlists/dirb/common.txt",
-    "flag_descriptions": {
-      "-u": "Target URL (must contain the keyword FUZZ)",
-      "-w": "Path to the wordlist"
-    },
-    "optional_flags": [
-      { "flag": "-c", "description": "Colorize output" },
-      { "flag": "-mc 200,301", "description": "Match specific HTTP status codes" }
-    ]
+    "title": "Key Concepts for Windows Fundamentals 3",
+    "command": "echo \"Review notes for Windows Fundamentals 3\"",
+    "description": "A placeholder entry for the Windows Fundamentals 3 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Windows Fundamentals 3 module on TryHackMe.",
+    "example": "echo \"Review notes for Windows Fundamentals 3\""
   },
   {
-    "id": "thm-101-sqlmap-basic",
-    "module_id": "module-thm-101",
-    "title": "Basic SQL Injection (sqlmap)",
-    "description": "Automated tool to detect and exploit SQL injection flaws.",
-    "command": "sqlmap -u \"<url>\" [FLAGS]",
-    "tool": "sqlmap",
-    "category": "Web Enumeration",
-    "scenario_tags": ["web", "sql-injection"],
+    "id": "thm-101-10",
+    "tool": "Note",
+    "category": "Intro to Networking",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "When you suspect a URL parameter (e.g., ?id=1) is vulnerable to SQL injection.",
-    "example": "sqlmap -u \"http://10.10.10.10/index.php?id=1\" --dbs",
-    "flag_descriptions": { "-u": "Target URL" },
-    "optional_flags": [
-      { "flag": "--dbs", "description": "Enumerate DBMS databases" },
-      { "flag": "--batch", "description": "Never ask for user input, use the default behavior" }
-    ]
+    "title": "Key Concepts for Intro to Networking",
+    "command": "echo \"Review notes for Intro to Networking\"",
+    "description": "A placeholder entry for the Intro to Networking room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Intro to Networking module on TryHackMe.",
+    "example": "echo \"Review notes for Intro to Networking\""
   },
   {
-    "id": "thm-101-nikto",
-    "module_id": "module-thm-101",
-    "title": "Web Server Scanner (Nikto)",
-    "description": "Scans web servers for outdated software and dangerous files.",
-    "command": "nikto -h <url>",
-    "tool": "nikto",
-    "category": "Web Enumeration",
-    "scenario_tags": ["web", "scanning"],
+    "id": "thm-101-11",
+    "tool": "Note",
+    "category": "Intro to LAN",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "For a quick vulnerability scan of a web server.",
-    "example": "nikto -h http://10.10.10.10",
-    "flag_descriptions": { "-h": "Target host/URL" }
-  },
-
-  {
-    "id": "thm-101-md5sum",
-    "module_id": "module-thm-101",
-    "title": "Check MD5 Hash (Linux)",
-    "description": "Compute and check MD5 message digest.",
-    "command": "md5sum <file>",
-    "tool": "md5sum",
-    "category": "Cryptography",
-    "scenario_tags": ["crypto", "linux"],
-    "platform": "linux",
-    "when_to_use": "To verify the integrity of a file or identify an MD5 hash.",
-    "example": "md5sum downloaded_file.bin"
+    "title": "Key Concepts for Intro to LAN",
+    "command": "echo \"Review notes for Intro to LAN\"",
+    "description": "A placeholder entry for the Intro to LAN room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Intro to LAN module on TryHackMe.",
+    "example": "echo \"Review notes for Intro to LAN\""
   },
   {
-    "id": "thm-101-base64",
-    "module_id": "module-thm-101",
-    "title": "Base64 Encode/Decode",
-    "description": "Encode or decode data and print to standard output.",
-    "command": "echo \"<string>\" | base64 [FLAGS]",
-    "tool": "base64",
-    "category": "Cryptography",
-    "scenario_tags": ["crypto", "linux"],
-    "platform": "linux",
-    "when_to_use": "To quickly decode a base64 string found during enumeration.",
-    "example": "echo \"cGFzc3dvcmQ=\" | base64 -d",
-    "optional_flags": [
-      { "flag": "-d", "description": "Decode data" }
-    ]
-  },
-  {
-    "id": "thm-101-john",
-    "module_id": "module-thm-101",
-    "title": "Crack Passwords (John the Ripper)",
-    "description": "Crack password hashes using a wordlist.",
-    "command": "john --wordlist=<wordlist> [FLAGS] <hash_file>",
-    "tool": "john",
-    "category": "Cryptography",
-    "scenario_tags": ["cracking", "passwords"],
+    "id": "thm-101-12",
+    "tool": "Note",
+    "category": "OSI Model",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "To crack captured password hashes (like Linux /etc/shadow dumps).",
-    "example": "john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt",
-    "flag_descriptions": { "--wordlist=": "Path to the dictionary file" },
-    "optional_flags": [
-      { "flag": "--format=raw-md5", "description": "Specify the hash format" }
-    ]
+    "title": "Key Concepts for OSI Model",
+    "command": "echo \"Review notes for OSI Model\"",
+    "description": "A placeholder entry for the OSI Model room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the OSI Model module on TryHackMe.",
+    "example": "echo \"Review notes for OSI Model\""
   },
   {
-    "id": "thm-101-hashcat",
-    "module_id": "module-thm-101",
-    "title": "Crack Passwords (Hashcat)",
-    "description": "Advanced password recovery utility.",
-    "command": "hashcat -m <hash_type> -a 0 <hash_file> <wordlist>",
-    "tool": "hashcat",
-    "category": "Cryptography",
-    "scenario_tags": ["cracking", "passwords"],
+    "id": "thm-101-13",
+    "tool": "Note",
+    "category": "Packets & Frames",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
     "platform": "cross-platform",
-    "when_to_use": "For offline password cracking when you need GPU performance.",
-    "example": "hashcat -m 0 -a 0 hash.txt /usr/share/wordlists/rockyou.txt",
-    "flag_descriptions": {
-      "-m": "Hash type (e.g., 0 for MD5)",
-      "-a 0": "Attack mode: Straight/Wordlist"
-    }
-  },
-
-  {
-    "id": "thm-101-hydra-ssh",
-    "module_id": "module-thm-101",
-    "title": "Brute-Force SSH (Hydra)",
-    "description": "Use Hydra to guess the password for an SSH service.",
-    "command": "hydra -l <username> -P <wordlist> [FLAGS] <target> ssh",
-    "tool": "hydra",
-    "category": "Offensive",
-    "scenario_tags": ["cracking", "ssh"],
-    "platform": "linux",
-    "when_to_use": "When you know a username and want to brute-force their SSH password.",
-    "example": "hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.10.10 ssh",
-    "flag_descriptions": {
-      "-l": "Specific login username",
-      "-P": "Path to the password wordlist"
-    },
-    "optional_flags": [
-      { "flag": "-t 4", "description": "Number of parallel tasks (threads)" },
-      { "flag": "-V", "description": "Verbose mode (show every attempt)" }
-    ]
+    "title": "Key Concepts for Packets & Frames",
+    "command": "echo \"Review notes for Packets & Frames\"",
+    "description": "A placeholder entry for the Packets & Frames room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Packets & Frames module on TryHackMe.",
+    "example": "echo \"Review notes for Packets & Frames\""
   },
   {
-    "id": "thm-101-msfconsole",
-    "module_id": "module-thm-101",
-    "title": "Start Metasploit",
-    "description": "Launch the Metasploit Framework console.",
-    "command": "msfconsole [FLAGS]",
-    "tool": "msfconsole",
-    "category": "Offensive",
-    "scenario_tags": ["exploitation", "metasploit"],
-    "platform": "linux",
-    "when_to_use": "To search for and execute pre-built exploits (like EternalBlue).",
-    "example": "msfconsole -q",
-    "optional_flags": [
-      { "flag": "-q", "description": "Quiet mode (don't print the startup banner)" }
-    ]
+    "id": "thm-101-14",
+    "tool": "Note",
+    "category": "Extending Your Network",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Extending Your Network",
+    "command": "echo \"Review notes for Extending Your Network\"",
+    "description": "A placeholder entry for the Extending Your Network room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Extending Your Network module on TryHackMe.",
+    "example": "echo \"Review notes for Extending Your Network\""
   },
   {
-    "id": "thm-101-nc-listen",
-    "module_id": "module-thm-101",
-    "title": "Netcat Listener",
-    "description": "Start a Netcat listener to catch reverse shells.",
-    "command": "nc -lvnp <port>",
-    "tool": "nc",
-    "category": "Offensive",
-    "scenario_tags": ["exploitation", "reverse-shell", "netcat"],
-    "platform": "linux",
-    "when_to_use": "When executing a reverse shell payload on a target, you need this listening on your machine to catch the connection.",
-    "example": "nc -lvnp 4444",
-    "flag_descriptions": {
-      "-lvnp": "Listen, Verbose, No DNS resolution, Port number"
-    }
-  },
-
-  {
-    "id": "thm-101-tcpdump",
-    "module_id": "module-thm-101",
-    "title": "Capture Packets (tcpdump)",
-    "description": "A command-line packet analyzer.",
-    "command": "tcpdump -i <interface> [FLAGS]",
-    "tool": "tcpdump",
-    "category": "Defensive / SOC",
-    "scenario_tags": ["defensive", "networking"],
-    "platform": "linux",
-    "when_to_use": "To monitor live network traffic for suspicious activity.",
-    "example": "tcpdump -i eth0 port 80",
-    "flag_descriptions": {
-      "-i": "Specify the network interface to listen on"
-    },
-    "optional_flags": [
-      { "flag": "-n", "description": "Don't resolve hostnames" },
-      { "flag": "-X", "description": "Show the packet payload in both HEX and ASCII" }
-    ]
+    "id": "thm-101-15",
+    "tool": "Note",
+    "category": "Intro to Web Hacking",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Intro to Web Hacking",
+    "command": "echo \"Review notes for Intro to Web Hacking\"",
+    "description": "A placeholder entry for the Intro to Web Hacking room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Intro to Web Hacking module on TryHackMe.",
+    "example": "echo \"Review notes for Intro to Web Hacking\""
   },
   {
-    "id": "thm-101-tshark",
-    "module_id": "module-thm-101",
-    "title": "Analyze PCAP (TShark)",
-    "description": "Terminal-based Wireshark. Analyze saved packet captures.",
-    "command": "tshark -r <pcap_file> [FLAGS]",
-    "tool": "tshark",
-    "category": "Defensive / SOC",
-    "scenario_tags": ["defensive", "networking", "wireshark"],
-    "platform": "linux",
-    "when_to_use": "To analyze network traffic captures without a GUI.",
-    "example": "tshark -r capture.pcap",
-    "flag_descriptions": {
-      "-r": "Read from a saved PCAP file"
-    },
-    "optional_flags": [
-      { "flag": "-Y \"http\"", "description": "Apply a display filter (e.g., only show HTTP traffic)" }
-    ]
+    "id": "thm-101-16",
+    "tool": "Note",
+    "category": "How The Web Works",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for How The Web Works",
+    "command": "echo \"Review notes for How The Web Works\"",
+    "description": "A placeholder entry for the How The Web Works room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the How The Web Works module on TryHackMe.",
+    "example": "echo \"Review notes for How The Web Works\""
   },
   {
-    "id": "thm-101-snort",
-    "module_id": "module-thm-101",
-    "title": "Run Snort IDS",
-    "description": "Run the Snort Intrusion Detection System on a PCAP file.",
-    "command": "snort -r <pcap_file> -c <config_file> [FLAGS]",
-    "tool": "snort",
-    "category": "Defensive / SOC",
-    "scenario_tags": ["defensive", "ids"],
-    "platform": "linux",
-    "when_to_use": "To analyze traffic against IDS rules to detect malicious behavior.",
-    "example": "snort -r traffic.pcap -c /etc/snort/snort.conf -A console",
-    "flag_descriptions": {
-      "-r": "Read from PCAP",
-      "-c": "Specify the configuration/rules file"
-    },
-    "optional_flags": [
-      { "flag": "-A console", "description": "Print alerts to the console" }
-    ]
+    "id": "thm-101-17",
+    "tool": "Note",
+    "category": "HTTP in Detail",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for HTTP in Detail",
+    "command": "echo \"Review notes for HTTP in Detail\"",
+    "description": "A placeholder entry for the HTTP in Detail room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the HTTP in Detail module on TryHackMe.",
+    "example": "echo \"Review notes for HTTP in Detail\""
+  },
+  {
+    "id": "thm-101-18",
+    "tool": "Note",
+    "category": "DNS in Detail",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for DNS in Detail",
+    "command": "echo \"Review notes for DNS in Detail\"",
+    "description": "A placeholder entry for the DNS in Detail room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the DNS in Detail module on TryHackMe.",
+    "example": "echo \"Review notes for DNS in Detail\""
+  },
+  {
+    "id": "thm-101-19",
+    "tool": "Note",
+    "category": "Putting it all together",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Putting it all together",
+    "command": "echo \"Review notes for Putting it all together\"",
+    "description": "A placeholder entry for the Putting it all together room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Putting it all together module on TryHackMe.",
+    "example": "echo \"Review notes for Putting it all together\""
+  },
+  {
+    "id": "thm-101-20",
+    "tool": "Note",
+    "category": "Web Application Security",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Web Application Security",
+    "command": "echo \"Review notes for Web Application Security\"",
+    "description": "A placeholder entry for the Web Application Security room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Web Application Security module on TryHackMe.",
+    "example": "echo \"Review notes for Web Application Security\""
+  },
+  {
+    "id": "thm-101-21",
+    "tool": "Note",
+    "category": "Burp Suite: The Basics",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Burp Suite: The Basics",
+    "command": "echo \"Review notes for Burp Suite: The Basics\"",
+    "description": "A placeholder entry for the Burp Suite: The Basics room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Burp Suite: The Basics module on TryHackMe.",
+    "example": "echo \"Review notes for Burp Suite: The Basics\""
+  },
+  {
+    "id": "thm-101-22",
+    "tool": "Note",
+    "category": "Burp Suite: Repeater",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Burp Suite: Repeater",
+    "command": "echo \"Review notes for Burp Suite: Repeater\"",
+    "description": "A placeholder entry for the Burp Suite: Repeater room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Burp Suite: Repeater module on TryHackMe.",
+    "example": "echo \"Review notes for Burp Suite: Repeater\""
+  },
+  {
+    "id": "thm-101-23",
+    "tool": "Note",
+    "category": "Burp Suite: Intruder",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Burp Suite: Intruder",
+    "command": "echo \"Review notes for Burp Suite: Intruder\"",
+    "description": "A placeholder entry for the Burp Suite: Intruder room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Burp Suite: Intruder module on TryHackMe.",
+    "example": "echo \"Review notes for Burp Suite: Intruder\""
+  },
+  {
+    "id": "thm-101-24",
+    "tool": "Note",
+    "category": "Burp Suite: Other Modules",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Burp Suite: Other Modules",
+    "command": "echo \"Review notes for Burp Suite: Other Modules\"",
+    "description": "A placeholder entry for the Burp Suite: Other Modules room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Burp Suite: Other Modules module on TryHackMe.",
+    "example": "echo \"Review notes for Burp Suite: Other Modules\""
+  },
+  {
+    "id": "thm-101-25",
+    "tool": "Note",
+    "category": "OWASP Top 10",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for OWASP Top 10",
+    "command": "echo \"Review notes for OWASP Top 10\"",
+    "description": "A placeholder entry for the OWASP Top 10 room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the OWASP Top 10 module on TryHackMe.",
+    "example": "echo \"Review notes for OWASP Top 10\""
+  },
+  {
+    "id": "thm-101-26",
+    "tool": "Note",
+    "category": "Command Injection",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Command Injection",
+    "command": "echo \"Review notes for Command Injection\"",
+    "description": "A placeholder entry for the Command Injection room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Command Injection module on TryHackMe.",
+    "example": "echo \"Review notes for Command Injection\""
+  },
+  {
+    "id": "thm-101-27",
+    "tool": "Note",
+    "category": "Cross-site Scripting",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Cross-site Scripting",
+    "command": "echo \"Review notes for Cross-site Scripting\"",
+    "description": "A placeholder entry for the Cross-site Scripting room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Cross-site Scripting module on TryHackMe.",
+    "example": "echo \"Review notes for Cross-site Scripting\""
+  },
+  {
+    "id": "thm-101-28",
+    "tool": "Note",
+    "category": "SQL Injection",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for SQL Injection",
+    "command": "echo \"Review notes for SQL Injection\"",
+    "description": "A placeholder entry for the SQL Injection room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the SQL Injection module on TryHackMe.",
+    "example": "echo \"Review notes for SQL Injection\""
+  },
+  {
+    "id": "thm-101-29",
+    "tool": "Note",
+    "category": "Authentication Bypass",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Authentication Bypass",
+    "command": "echo \"Review notes for Authentication Bypass\"",
+    "description": "A placeholder entry for the Authentication Bypass room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Authentication Bypass module on TryHackMe.",
+    "example": "echo \"Review notes for Authentication Bypass\""
+  },
+  {
+    "id": "thm-101-30",
+    "tool": "Note",
+    "category": "IDOR",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for IDOR",
+    "command": "echo \"Review notes for IDOR\"",
+    "description": "A placeholder entry for the IDOR room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the IDOR module on TryHackMe.",
+    "example": "echo \"Review notes for IDOR\""
+  },
+  {
+    "id": "thm-101-31",
+    "tool": "Note",
+    "category": "File Inclusion",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for File Inclusion",
+    "command": "echo \"Review notes for File Inclusion\"",
+    "description": "A placeholder entry for the File Inclusion room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the File Inclusion module on TryHackMe.",
+    "example": "echo \"Review notes for File Inclusion\""
+  },
+  {
+    "id": "thm-101-32",
+    "tool": "Note",
+    "category": "SSRF",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for SSRF",
+    "command": "echo \"Review notes for SSRF\"",
+    "description": "A placeholder entry for the SSRF room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the SSRF module on TryHackMe.",
+    "example": "echo \"Review notes for SSRF\""
+  },
+  {
+    "id": "thm-101-33",
+    "tool": "Note",
+    "category": "Network Security",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Network Security",
+    "command": "echo \"Review notes for Network Security\"",
+    "description": "A placeholder entry for the Network Security room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Network Security module on TryHackMe.",
+    "example": "echo \"Review notes for Network Security\""
+  },
+  {
+    "id": "thm-101-34",
+    "tool": "Note",
+    "category": "Nmap: Basic Port Scans",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Nmap: Basic Port Scans",
+    "command": "echo \"Review notes for Nmap: Basic Port Scans\"",
+    "description": "A placeholder entry for the Nmap: Basic Port Scans room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Nmap: Basic Port Scans module on TryHackMe.",
+    "example": "echo \"Review notes for Nmap: Basic Port Scans\""
+  },
+  {
+    "id": "thm-101-35",
+    "tool": "Note",
+    "category": "Nmap: Advanced Port Scans",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Nmap: Advanced Port Scans",
+    "command": "echo \"Review notes for Nmap: Advanced Port Scans\"",
+    "description": "A placeholder entry for the Nmap: Advanced Port Scans room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Nmap: Advanced Port Scans module on TryHackMe.",
+    "example": "echo \"Review notes for Nmap: Advanced Port Scans\""
+  },
+  {
+    "id": "thm-101-36",
+    "tool": "Note",
+    "category": "Nmap: Post Port Scans",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Nmap: Post Port Scans",
+    "command": "echo \"Review notes for Nmap: Post Port Scans\"",
+    "description": "A placeholder entry for the Nmap: Post Port Scans room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Nmap: Post Port Scans module on TryHackMe.",
+    "example": "echo \"Review notes for Nmap: Post Port Scans\""
+  },
+  {
+    "id": "thm-101-37",
+    "tool": "Note",
+    "category": "Active Reconnaissance",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Active Reconnaissance",
+    "command": "echo \"Review notes for Active Reconnaissance\"",
+    "description": "A placeholder entry for the Active Reconnaissance room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Active Reconnaissance module on TryHackMe.",
+    "example": "echo \"Review notes for Active Reconnaissance\""
+  },
+  {
+    "id": "thm-101-38",
+    "tool": "Note",
+    "category": "Passive Reconnaissance",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Passive Reconnaissance",
+    "command": "echo \"Review notes for Passive Reconnaissance\"",
+    "description": "A placeholder entry for the Passive Reconnaissance room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Passive Reconnaissance module on TryHackMe.",
+    "example": "echo \"Review notes for Passive Reconnaissance\""
+  },
+  {
+    "id": "thm-101-39",
+    "tool": "Note",
+    "category": "Metasploit: Introduction",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Metasploit: Introduction",
+    "command": "echo \"Review notes for Metasploit: Introduction\"",
+    "description": "A placeholder entry for the Metasploit: Introduction room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Metasploit: Introduction module on TryHackMe.",
+    "example": "echo \"Review notes for Metasploit: Introduction\""
+  },
+  {
+    "id": "thm-101-40",
+    "tool": "Note",
+    "category": "Metasploit: Exploitation",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Metasploit: Exploitation",
+    "command": "echo \"Review notes for Metasploit: Exploitation\"",
+    "description": "A placeholder entry for the Metasploit: Exploitation room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Metasploit: Exploitation module on TryHackMe.",
+    "example": "echo \"Review notes for Metasploit: Exploitation\""
+  },
+  {
+    "id": "thm-101-41",
+    "tool": "Note",
+    "category": "Metasploit: Meterpreter",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Metasploit: Meterpreter",
+    "command": "echo \"Review notes for Metasploit: Meterpreter\"",
+    "description": "A placeholder entry for the Metasploit: Meterpreter room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Metasploit: Meterpreter module on TryHackMe.",
+    "example": "echo \"Review notes for Metasploit: Meterpreter\""
+  },
+  {
+    "id": "thm-101-42",
+    "tool": "Note",
+    "category": "Privilege Escalation",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Privilege Escalation",
+    "command": "echo \"Review notes for Privilege Escalation\"",
+    "description": "A placeholder entry for the Privilege Escalation room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Privilege Escalation module on TryHackMe.",
+    "example": "echo \"Review notes for Privilege Escalation\""
+  },
+  {
+    "id": "thm-101-43",
+    "tool": "Note",
+    "category": "Linux PrivEsc",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Linux PrivEsc",
+    "command": "echo \"Review notes for Linux PrivEsc\"",
+    "description": "A placeholder entry for the Linux PrivEsc room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Linux PrivEsc module on TryHackMe.",
+    "example": "echo \"Review notes for Linux PrivEsc\""
+  },
+  {
+    "id": "thm-101-44",
+    "tool": "Note",
+    "category": "Windows PrivEsc",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Windows PrivEsc",
+    "command": "echo \"Review notes for Windows PrivEsc\"",
+    "description": "A placeholder entry for the Windows PrivEsc room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Windows PrivEsc module on TryHackMe.",
+    "example": "echo \"Review notes for Windows PrivEsc\""
+  },
+  {
+    "id": "thm-101-45",
+    "tool": "Note",
+    "category": "Intro to Active Directory",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Intro to Active Directory",
+    "command": "echo \"Review notes for Intro to Active Directory\"",
+    "description": "A placeholder entry for the Intro to Active Directory room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Intro to Active Directory module on TryHackMe.",
+    "example": "echo \"Review notes for Intro to Active Directory\""
+  },
+  {
+    "id": "thm-101-46",
+    "tool": "Note",
+    "category": "Breaching Active Directory",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Breaching Active Directory",
+    "command": "echo \"Review notes for Breaching Active Directory\"",
+    "description": "A placeholder entry for the Breaching Active Directory room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Breaching Active Directory module on TryHackMe.",
+    "example": "echo \"Review notes for Breaching Active Directory\""
+  },
+  {
+    "id": "thm-101-47",
+    "tool": "Note",
+    "category": "Enumerating Active Directory",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Enumerating Active Directory",
+    "command": "echo \"Review notes for Enumerating Active Directory\"",
+    "description": "A placeholder entry for the Enumerating Active Directory room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Enumerating Active Directory module on TryHackMe.",
+    "example": "echo \"Review notes for Enumerating Active Directory\""
+  },
+  {
+    "id": "thm-101-48",
+    "tool": "Note",
+    "category": "Exploiting Active Directory",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Exploiting Active Directory",
+    "command": "echo \"Review notes for Exploiting Active Directory\"",
+    "description": "A placeholder entry for the Exploiting Active Directory room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Exploiting Active Directory module on TryHackMe.",
+    "example": "echo \"Review notes for Exploiting Active Directory\""
+  },
+  {
+    "id": "thm-101-49",
+    "tool": "Note",
+    "category": "Post-Exploitation Basics",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Post-Exploitation Basics",
+    "command": "echo \"Review notes for Post-Exploitation Basics\"",
+    "description": "A placeholder entry for the Post-Exploitation Basics room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Post-Exploitation Basics module on TryHackMe.",
+    "example": "echo \"Review notes for Post-Exploitation Basics\""
+  },
+  {
+    "id": "thm-101-50",
+    "tool": "Note",
+    "category": "Pivoting",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Pivoting",
+    "command": "echo \"Review notes for Pivoting\"",
+    "description": "A placeholder entry for the Pivoting room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Pivoting module on TryHackMe.",
+    "example": "echo \"Review notes for Pivoting\""
+  },
+  {
+    "id": "thm-101-51",
+    "tool": "Note",
+    "category": "Cryptography Basics",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Cryptography Basics",
+    "command": "echo \"Review notes for Cryptography Basics\"",
+    "description": "A placeholder entry for the Cryptography Basics room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Cryptography Basics module on TryHackMe.",
+    "example": "echo \"Review notes for Cryptography Basics\""
+  },
+  {
+    "id": "thm-101-52",
+    "tool": "Note",
+    "category": "Hashing",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Hashing",
+    "command": "echo \"Review notes for Hashing\"",
+    "description": "A placeholder entry for the Hashing room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Hashing module on TryHackMe.",
+    "example": "echo \"Review notes for Hashing\""
+  },
+  {
+    "id": "thm-101-53",
+    "tool": "Note",
+    "category": "Encryption",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Encryption",
+    "command": "echo \"Review notes for Encryption\"",
+    "description": "A placeholder entry for the Encryption room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Encryption module on TryHackMe.",
+    "example": "echo \"Review notes for Encryption\""
+  },
+  {
+    "id": "thm-101-54",
+    "tool": "Note",
+    "category": "Cyber Security 101 Summary",
+    "module_ids": [
+      "module-thm-101"
+    ],
+    "scenario_tags": [
+      "tryhackme",
+      "certification"
+    ],
+    "platform": "cross-platform",
+    "title": "Key Concepts for Cyber Security 101 Summary",
+    "command": "echo \"Review notes for Cyber Security 101 Summary\"",
+    "description": "A placeholder entry for the Cyber Security 101 Summary room in the THM Cyber Security 101 pathway.",
+    "when_to_use": "When studying the Cyber Security 101 Summary module on TryHackMe.",
+    "example": "echo \"Review notes for Cyber Security 101 Summary\""
   }
 ]

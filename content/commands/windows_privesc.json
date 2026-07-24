@@ -15,7 +15,10 @@
     "description": "Lists the Windows security privileges assigned to the current user token. This is one of the most critical first steps in Windows enumeration.",
     "when_to_use": "Run this immediately upon getting a shell. Look specifically for SeImpersonatePrivilege, SeAssignPrimaryTokenPrivilege, or SeBackupPrivilege, which are common pathways to full SYSTEM compromise.",
     "example": "whoami /priv",
-    "common_pitfalls": "Just because a privilege is listed does not mean it is currently 'Enabled'. However, an attacker can usually enable a listed privilege programmatically."
+    "common_pitfalls": "Just because a privilege is listed does not mean it is currently 'Enabled'. However, an attacker can usually enable a listed privilege programmatically.",
+    "module_ids": [
+      "module-privesc-win"
+    ]
   },
   {
     "id": "win-cmd-sysinfo",
@@ -35,6 +38,9 @@
     "example": "systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\"",
     "related_ids": [
       "win-ps-system-info"
+    ],
+    "module_ids": [
+      "module-privesc-win"
     ]
   },
   {
@@ -52,7 +58,10 @@
     "command": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture",
     "description": "The modern PowerShell equivalent for querying OS details using CIM instances, returning a clean, parseable object.",
     "when_to_use": "Preferred over CMD's systeminfo when you have a stable PowerShell session and need precise object-oriented output without string parsing.",
-    "example": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture"
+    "example": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, OSArchitecture",
+    "module_ids": [
+      "module-privesc-win"
+    ]
   },
   {
     "id": "win-cmd-net-users",
@@ -69,7 +78,10 @@
     "command": "net users\nnet localgroup administrators",
     "description": "Displays all local user accounts on the machine, and then specifically lists the members of the powerful local 'Administrators' group.",
     "when_to_use": "Crucial for understanding who has access to the machine. If your current user is in the Administrators group, you already have full control (but may need to bypass UAC).",
-    "example": "net localgroup administrators"
+    "example": "net localgroup administrators",
+    "module_ids": [
+      "module-privesc-win"
+    ]
   },
   {
     "id": "win-ps-get-acl",
@@ -87,7 +99,10 @@
     "description": "Retrieves the Access Control List (ACL) for a specific file or folder, detailing exactly which users or groups have Read, Write, or Execute permissions.",
     "when_to_use": "Use this to check if your low-privileged user has write access to sensitive directories, such as 'C:\\Program Files\\', which is a primary requirement for DLL Hijacking or unquoted service path exploits.",
     "example": "Get-Acl -Path \"C:\\Program Files\\VulnerableApp\" | Format-List",
-    "common_pitfalls": "PowerShell's native Get-Acl output can be difficult to interpret quickly. Tools like accesschk.exe are often preferred for readability if available."
+    "common_pitfalls": "PowerShell's native Get-Acl output can be difficult to interpret quickly. Tools like accesschk.exe are often preferred for readability if available.",
+    "module_ids": [
+      "module-privesc-win"
+    ]
   },
   {
     "id": "win-winpeas-all",
@@ -107,6 +122,9 @@
     "common_pitfalls": "The output is extremely verbose and color-coded. If you redirect to a text file, the ANSI color codes will make it unreadable unless you use a compatible viewer or strip them.",
     "related_ids": [
       "linpeas-all"
+    ],
+    "module_ids": [
+      "module-privesc-win"
     ]
   },
   {
@@ -124,6 +142,9 @@
     "command": "wmic service get name,displayname,pathname,startmode | findstr /i \"auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\"",
     "description": "Searches for services that start automatically, are located outside the secure Windows folder, and do NOT have quotes around their executable paths. This is the classic signature of an Unquoted Service Path vulnerability.",
     "when_to_use": "A staple manual check. If an unquoted path contains a space (e.g., C:\\Program Files\\App\\run.exe), Windows might try to execute 'C:\\Program.exe' first. If you can write to the C:\\ drive, you can drop a malicious 'Program.exe' to intercept the service launch.",
-    "example": "wmic service get name,displayname,pathname,startmode | findstr /i \"auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\""
+    "example": "wmic service get name,displayname,pathname,startmode | findstr /i \"auto\" | findstr /i /v \"C:\\Windows\\\\\" | findstr /i /v \"\"\"",
+    "module_ids": [
+      "module-privesc-win"
+    ]
   }
 ]

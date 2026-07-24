@@ -7,6 +7,7 @@ export interface CommandEntry {
   id: string;
   tool: string;
   category: string;
+  module_ids?: string[];
   scenario_tags: string[];
   platform: 'linux' | 'windows' | 'cross-platform';
   title: string;

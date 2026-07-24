@@ -20,6 +20,9 @@
         "label": "BloodHound Official Docs",
         "url": "https://bloodhound.readthedocs.io/en/latest/"
       }
+    ],
+    "module_ids": [
+      "module-ad"
     ]
   },
   {
@@ -36,7 +39,10 @@
     "command": "ldapsearch -x -h <domain_controller_ip> -b \"DC=<domain>,DC=<local>\" -D \"<domain>\\<username>\" -w '<password>' \"(objectClass=user)\" sAMAccountName",
     "description": "Connects to the Domain Controller via LDAP using valid credentials to dump a list of all user accounts (specifically extracting the sAMAccountName attribute) in the domain.",
     "when_to_use": "When you are attacking from a Linux machine and have obtained low-privileged AD credentials, and you need a valid list of usernames for password spraying or AS-REP Roasting.",
-    "example": "ldapsearch -x -h 10.10.10.100 -b \"DC=corp,DC=local\" -D \"corp\\jsmith\" -w 'Password123!' \"(objectClass=user)\" sAMAccountName"
+    "example": "ldapsearch -x -h 10.10.10.100 -b \"DC=corp,DC=local\" -D \"corp\\jsmith\" -w 'Password123!' \"(objectClass=user)\" sAMAccountName",
+    "module_ids": [
+      "module-ad"
+    ]
   },
   {
     "id": "ad-net-domain-admins",
@@ -53,6 +59,9 @@
     "description": "Queries the Domain Controller to list the direct members of the highly privileged 'Domain Admins' group.",
     "when_to_use": "Use this to identify your ultimate high-value targets within the network. These are the users you want to avoid attacking directly, but whose sessions you want to steal.",
     "example": "net group \"Domain Admins\" /domain",
-    "common_pitfalls": "This only shows direct members. Nested groups (e.g., an 'IT_Admins' group placed inside 'Domain Admins') will not be recursively expanded by this command."
+    "common_pitfalls": "This only shows direct members. Nested groups (e.g., an 'IT_Admins' group placed inside 'Domain Admins') will not be recursively expanded by this command.",
+    "module_ids": [
+      "module-ad"
+    ]
   }
 ]

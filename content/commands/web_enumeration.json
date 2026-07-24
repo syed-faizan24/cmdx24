@@ -28,6 +28,9 @@
         "flag": "-v",
         "description": "Verbose output, printing full URLs and redirects"
       }
+    ],
+    "module_ids": [
+      "module-web"
     ]
   },
   {
@@ -60,6 +63,9 @@
         "flag": "-v",
         "description": "Verbose output, printing full URLs and redirects"
       }
+    ],
+    "module_ids": [
+      "module-web"
     ]
   },
   {
@@ -94,6 +100,9 @@
         "flag": "-t 50",
         "description": "Run with 50 concurrent threads (default is 10)"
       }
+    ],
+    "module_ids": [
+      "module-web"
     ]
   },
   {
@@ -111,7 +120,10 @@
     "description": "The fundamental setup for Burp Suite: routing your browser traffic through Burp's local proxy listener so you can pause, inspect, and modify HTTP requests before they reach the server.",
     "when_to_use": "Mandatory for all manual web application testing. Use this to bypass client-side validation, analyze hidden API requests, or manipulate session cookies.",
     "example": "N/A (GUI action)",
-    "common_pitfalls": "Forgetting to install PortSwigger's CA certificate in your browser, which will cause all HTTPS sites to throw severe security warnings."
+    "common_pitfalls": "Forgetting to install PortSwigger's CA certificate in your browser, which will cause all HTTPS sites to throw severe security warnings.",
+    "module_ids": [
+      "module-web"
+    ]
   },
   {
     "id": "burp-repeater",
@@ -127,7 +139,10 @@
     "command": "Ctrl + R (Windows/Linux) or Cmd + R (Mac)",
     "description": "Quickly sends an intercepted HTTP request to the 'Repeater' tab. Repeater allows you to manually tweak parameters and replay the exact same request endlessly to observe the server's response.",
     "when_to_use": "Use this constantly when probing an endpoint for vulnerabilities like SQL Injection, XSS, or IDOR, as it saves you from having to click through the actual website UI over and over.",
-    "example": "N/A (GUI action)"
+    "example": "N/A (GUI action)",
+    "module_ids": [
+      "module-web"
+    ]
   },
   {
     "id": "nikto-basic",
@@ -143,7 +158,10 @@
     "description": "A classic, noisy web vulnerability scanner that checks web servers for thousands of outdated files, misconfigurations, and known insecure software versions.",
     "when_to_use": "Run this in the background early in an engagement. While it generates many false positives, it excels at quickly identifying missing security headers, default index pages, or ancient server software.",
     "example": "nikto -h http://10.10.10.20",
-    "common_pitfalls": "Extremely noisy and signature-heavy. It will light up a target's Intrusion Detection System instantly."
+    "common_pitfalls": "Extremely noisy and signature-heavy. It will light up a target's Intrusion Detection System instantly.",
+    "module_ids": [
+      "module-web"
+    ]
   },
   {
     "id": "wpscan-enum",
@@ -160,7 +178,10 @@
     "description": "A specialized scanner for WordPress environments. This command specifically enumerates vulnerable plugins ('vp'), vulnerable themes ('vt'), and registered users ('u').",
     "when_to_use": "The absolute first tool you should reach for whenever you detect a target is running WordPress. Identifying a vulnerable plugin is the most common path to compromising a WP site.",
     "example": "wpscan --url http://blog.target.com --enumerate vp,vt,u --api-token <your_token>",
-    "common_pitfalls": "Without supplying a free Wpscan API token, the tool will enumerate the plugins but will NOT tell you if they have known vulnerabilities."
+    "common_pitfalls": "Without supplying a free Wpscan API token, the tool will enumerate the plugins but will NOT tell you if they have known vulnerabilities.",
+    "module_ids": [
+      "module-web"
+    ]
   },
   {
     "id": "sqlmap-auto",
@@ -192,6 +213,9 @@
         "flag": "--random-agent",
         "description": "Use randomly selected HTTP User-Agent header value"
       }
+    ],
+    "module_ids": [
+      "module-web"
     ]
   },
   {
@@ -222,6 +246,9 @@
         "flag": "--random-agent",
         "description": "Use randomly selected HTTP User-Agent header value"
       }
+    ],
+    "module_ids": [
+      "module-web"
     ]
   }
 ]

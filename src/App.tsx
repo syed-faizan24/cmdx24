@@ -129,10 +129,7 @@ function App() {
       if (selectedModule === 'favorites') {
         result = result.filter(cmd => favorites.includes(cmd.id));
       } else {
-        const mod = modules.find(m => m.id === selectedModule);
-        if (mod) {
-          result = result.filter(cmd => cmd.category.toLowerCase().includes(mod.name.toLowerCase()) || mod.name.toLowerCase().includes(cmd.category.toLowerCase()));
-        }
+        result = result.filter(cmd => cmd.module_ids?.includes(selectedModule));
       }
     }
 
@@ -275,11 +272,26 @@ function App() {
               <p className="text-sm text-gray-600 mt-2">Adjust your filters or search query.</p>
             </div>
           ) : (
-            filteredCommands.map(cmd => {
-              const isExpanded = expandedId === cmd.id;
-              const isFav = favorites.includes(cmd.id);
+            Object.entries(
+              filteredCommands.reduce((acc, cmd) => {
+                const cat = cmd.category || 'Uncategorized';
+                if (!acc[cat]) acc[cat] = [];
+                acc[cat].push(cmd);
+                return acc;
+              }, {} as Record<string, CommandEntry[]>)
+            ).map(([category, cmds]) => (
+              <div key={category} className="mb-10">
+                <div className="flex items-center gap-3 mb-6 mt-4">
+                  <div className="w-1.5 h-1.5 bg-brand-primary rounded-none shadow-[0_0_8px_rgba(0,209,255,0.8)]"></div>
+                  <h2 className="text-xl font-mono font-bold text-gray-100 uppercase tracking-[0.1em]">{category}</h2>
+                  <div className="h-px bg-bg-active flex-1"></div>
+                </div>
+                <div className="flex flex-col gap-6">
+                  {cmds.map(cmd => {
+                    const isExpanded = expandedId === cmd.id;
+                    const isFav = favorites.includes(cmd.id);
 
-              return (
+                    return (
                 <div key={cmd.id} className="bg-bg-surface border border-bg-active rounded-none overflow-hidden hover:border-gray-600 transition-colors">
                   {/* Header Row */}
                   <div 
@@ -366,7 +378,10 @@ function App() {
                   )}
                 </div>
               );
-            })
+            })}
+                </div>
+              </div>
+            ))
           )}
         </div>
       </main>

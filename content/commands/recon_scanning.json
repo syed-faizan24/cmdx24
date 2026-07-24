@@ -38,6 +38,9 @@
         "flag": "-A",
         "description": "Enable OS detection, version detection, script scanning, and traceroute"
       }
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -77,6 +80,9 @@
         "flag": "-A",
         "description": "Enable OS detection, version detection, script scanning, and traceroute"
       }
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -111,6 +117,9 @@
         "flag": "-A",
         "description": "Enable OS detection, version detection, script scanning, and traceroute"
       }
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -145,6 +154,9 @@
         "flag": "-A",
         "description": "Enable OS detection, version detection, script scanning, and traceroute"
       }
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -176,6 +188,9 @@
         "flag": "-A",
         "description": "Enable OS detection, version detection, script scanning, and traceroute"
       }
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -198,6 +213,9 @@
     "related_ids": [
       "nmap-syn-scan",
       "nmap-full-tcp"
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -215,7 +233,10 @@
     "description": "Queries the public WHOIS databases to retrieve registration records for a specific domain name, including registrar details, creation/expiration dates, and name servers.",
     "when_to_use": "This is one of the very first steps in external OSINT. It helps you identify the target organization's registered infrastructure, hosting providers, and potentially technical contact emails.",
     "example": "whois example.com",
-    "common_pitfalls": "Modern privacy protections (like GDPR or domain privacy services) often redact the most useful personal contact information from these records."
+    "common_pitfalls": "Modern privacy protections (like GDPR or domain privacy services) often redact the most useful personal contact information from these records.",
+    "module_ids": [
+      "module-recon"
+    ]
   },
   {
     "id": "dig-any",
@@ -236,6 +257,9 @@
     "related_ids": [
       "dig-axfr",
       "nslookup-interactive"
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   },
   {
@@ -253,7 +277,10 @@
     "description": "Attempts a full DNS Zone Transfer (AXFR) from a target nameserver. If misconfigured, the server will dump its entire database of DNS records for the domain to your machine.",
     "when_to_use": "Always attempt this when you discover an authoritative nameserver for a target domain. While rare today, a successful zone transfer instantly reveals the organization's entire external (and sometimes internal) DNS footprint.",
     "example": "dig axfr zonetransfer.me @nsztm1.digi.ninja",
-    "common_pitfalls": "Almost always fails (Refused) on modern networks because zone transfers should only be allowed between authorized primary and secondary DNS servers."
+    "common_pitfalls": "Almost always fails (Refused) on modern networks because zone transfers should only be allowed between authorized primary and secondary DNS servers.",
+    "module_ids": [
+      "module-recon"
+    ]
   },
   {
     "id": "nslookup-interactive",
@@ -272,6 +299,9 @@
     "example": "nslookup\n> set type=TXT\n> internal.corp.local",
     "related_ids": [
       "dig-any"
+    ],
+    "module_ids": [
+      "module-recon"
     ]
   }
 ]

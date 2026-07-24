@@ -21,6 +21,9 @@
         "label": "GTFOBins - Sudo break-outs",
         "url": "https://gtfobins.github.io/"
       }
+    ],
+    "module_ids": [
+      "module-privesc-linux"
     ]
   },
   {
@@ -39,7 +42,10 @@
     "description": "Searches the entire file system for executable files that have the Set-User-ID (SUID) bit set. When executed, these files run with the privileges of the file's owner (often root) rather than the user executing them.",
     "when_to_use": "A fundamental manual check. If you find a non-standard binary (e.g., an outdated version of 'exim4' or a custom backup script) with the SUID bit set, it is a prime target for exploitation.",
     "example": "find / -perm -u=s -type f 2>/dev/null",
-    "common_pitfalls": "This will return many false positives (like /usr/bin/passwd or /bin/su) which naturally require the SUID bit to function properly. You must filter these out mentally."
+    "common_pitfalls": "This will return many false positives (like /usr/bin/passwd or /bin/su) which naturally require the SUID bit to function properly. You must filter these out mentally.",
+    "module_ids": [
+      "module-privesc-linux"
+    ]
   },
   {
     "id": "linux-cron-jobs",
@@ -56,7 +62,10 @@
     "command": "cat /etc/crontab\nls -la /etc/cron.d/",
     "description": "Reads the system-wide crontab file and lists the contents of the cron.d directory to reveal scheduled tasks running automatically.",
     "when_to_use": "Look for scheduled tasks running as root that call scripts with weak permissions. If you can edit a script that root is scheduled to run every 5 minutes, you can simply append a reverse shell payload to it.",
-    "example": "cat /etc/crontab"
+    "example": "cat /etc/crontab",
+    "module_ids": [
+      "module-privesc-linux"
+    ]
   },
   {
     "id": "linux-capabilities",
@@ -74,7 +83,10 @@
     "description": "Recursively searches the filesystem for binaries that have been assigned specific Linux capabilities (a modern alternative to the monolithic SUID bit).",
     "when_to_use": "Crucial for finding stealthy privilege escalation vectors. For example, if the 'tar' or 'python' binary has the 'cap_dac_read_search' capability, you can use it to read any file on the system, including /etc/shadow, without needing full root.",
     "example": "getcap -r / 2>/dev/null",
-    "common_pitfalls": "Often overlooked by beginners who only focus on SUID files. Capabilities are widely used in containerized environments (like Docker)."
+    "common_pitfalls": "Often overlooked by beginners who only focus on SUID files. Capabilities are widely used in containerized environments (like Docker).",
+    "module_ids": [
+      "module-privesc-linux"
+    ]
   },
   {
     "id": "linpeas-all",
@@ -94,6 +106,9 @@
     "common_pitfalls": "Executing scripts directly from the internet via 'curl | sh' is extremely loud and easily blocked or flagged by enterprise EDR solutions.",
     "related_ids": [
       "win-winpeas-all"
+    ],
+    "module_ids": [
+      "module-privesc-linux"
     ]
   }
 ]
