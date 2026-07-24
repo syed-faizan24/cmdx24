@@ -15,7 +15,11 @@
       "linux",
       "mac"
     ],
-    "when_to_use": "When you have command execution on a Linux system and bash is available."
+    "when_to_use": "When you have command execution on a Linux system and bash is available.",
+    "scenario_tags": [
+      "reverse-shell",
+      null
+    ]
   },
   {
     "id": "revshell-nc-mkfifo",
@@ -34,7 +38,11 @@
       "linux",
       "mac"
     ],
-    "when_to_use": "When 'nc -e' is not supported (OpenBSD netcat) but nc is installed."
+    "when_to_use": "When 'nc -e' is not supported (OpenBSD netcat) but nc is installed.",
+    "scenario_tags": [
+      "reverse-shell",
+      null
+    ]
   },
   {
     "id": "revshell-python3",
@@ -54,7 +62,11 @@
       "mac",
       "windows"
     ],
-    "when_to_use": "When python3 is installed on the target system."
+    "when_to_use": "When python3 is installed on the target system.",
+    "scenario_tags": [
+      "reverse-shell",
+      null
+    ]
   },
   {
     "id": "revshell-powershell",
@@ -71,7 +83,11 @@
     "platforms": [
       "windows"
     ],
-    "when_to_use": "When you have command execution on a Windows machine via PowerShell."
+    "when_to_use": "When you have command execution on a Windows machine via PowerShell.",
+    "scenario_tags": [
+      "reverse-shell",
+      null
+    ]
   },
   {
     "id": "revshell-php",
@@ -90,6 +106,10 @@
       "mac",
       "windows"
     ],
-    "when_to_use": "When you can execute PHP code on the target server."
+    "when_to_use": "When you can execute PHP code on the target server.",
+    "scenario_tags": [
+      "reverse-shell",
+      null
+    ]
   }
 ]
