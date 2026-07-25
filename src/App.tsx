@@ -146,7 +146,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-bg-base text-gray-200 flex overflow-hidden font-sans">
+    <div className="h-screen w-screen bg-bg-base text-gray-200 flex overflow-hidden font-sans">
       <ToastContainer />
       {/* Sidebar */}
       <aside className="w-72 bg-bg-surface border-r border-bg-active flex flex-col z-10 shrink-0">
@@ -221,7 +221,7 @@ function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden bg-bg-base relative">
+      <main className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden bg-bg-base relative">
         {/* Topbar */}
         <header className="bg-bg-surface border-b border-bg-active p-4 shrink-0 flex gap-4 items-center z-10">
           <div className="relative flex-1 group">
